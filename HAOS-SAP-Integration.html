@@ -1,0 +1,1216 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HAOS–SAP Integration Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F4F6F3; --surface:#FFFFFF; --surface-2:#EEF1ED; --ink:#17201D; --muted:#56635D; --rule:#D5DBD5;
+  --his:#0B7566; --his-soft:#DFF1EC; --sap:#3245A3; --sap-soft:#E5E8F6; --brk:#9C620E; --brk-soft:#F6ECD9;
+  --usr:#4F5B56; --usr-soft:#E9ECE9; --warn:#B0441C; --warn-soft:#FBE9E1; --ok:#2F7A3A;
+  --display:"Bai Jamjuree","Leelawadee UI","Tahoma",sans-serif;
+  --body:"IBM Plex Sans Thai","Leelawadee UI","Tahoma",sans-serif;
+  --mono:"IBM Plex Mono","Consolas","Menlo",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1513; --surface:#161E1B; --surface-2:#1C2522; --ink:#E3EAE6; --muted:#9BA8A2; --rule:#2B3632;
+    --his:#4DBFAC; --his-soft:#15332D; --sap:#95A3F2; --sap-soft:#1E2444; --brk:#E2A84E; --brk-soft:#36291A;
+    --usr:#AEB9B4; --usr-soft:#222B28; --warn:#F08C62; --warn-soft:#3A2118; --ok:#7BCB86;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1513; --surface:#161E1B; --surface-2:#1C2522; --ink:#E3EAE6; --muted:#9BA8A2; --rule:#2B3632;
+  --his:#4DBFAC; --his-soft:#15332D; --sap:#95A3F2; --sap-soft:#1E2444; --brk:#E2A84E; --brk-soft:#36291A;
+  --usr:#AEB9B4; --usr-soft:#222B28; --warn:#F08C62; --warn-soft:#3A2118; --ok:#7BCB86;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.7;padding-inline:20px;padding-block:0 64px}
+a{color:var(--his)}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--sap);outline-offset:2px;border-radius:3px}
+code,.mono{font-family:var(--mono);font-size:.86em}
+code{background:var(--surface-2);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:48px}
+@media (max-width:980px){.wrap{grid-template-columns:minmax(0,1fr)}.toc{display:none}}
+.toc{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;padding-top:40px;max-height:100vh;overflow:auto;font-size:13px}
+.toc b{font-family:var(--display);letter-spacing:.06em;text-transform:uppercase;font-size:11px;color:var(--muted)}
+.toc ol{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:2px}
+.toc a{display:block;color:var(--muted);text-decoration:none;padding:3px 8px;border-left:2px solid var(--rule)}
+.toc a:hover{color:var(--ink);border-left-color:var(--his)}
+main{min-width:0;padding-top:40px}
+header.hero{padding-bottom:28px;border-bottom:1px solid var(--rule);margin-bottom:8px}
+.eyebrow{font-family:var(--display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;line-height:1.25;margin:0}
+h1{font-size:clamp(28px,4.2vw,40px);font-weight:700;margin-top:8px}
+h1 .arrow{color:var(--brk)}
+.lede{font-size:17px;max-width:68ch;color:var(--muted);margin:14px 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:18px;font-size:13px;color:var(--muted)}
+.meta span b{color:var(--ink);font-weight:500}
+section{padding-top:44px}
+h2{font-size:25px;font-weight:700;display:flex;gap:12px;align-items:baseline}
+h2 .n{font-family:var(--mono);font-size:14px;color:var(--muted);font-weight:500}
+h3{font-size:18px;font-weight:600;margin-top:28px}
+p,ul,ol{max-width:72ch}
+.sub{color:var(--muted);margin-top:6px}
+.keyfacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:22px;max-width:none}
+.fact{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:14px 16px}
+.fact .k{font-family:var(--display);font-weight:700;font-size:26px;line-height:1.1}
+.fact .k small{font-size:14px;font-weight:600;color:var(--muted)}
+.fact p{margin:6px 0 0;font-size:13.5px;color:var(--muted)}
+.dir{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:11.5px;font-weight:500;padding:1px 7px;border-radius:999px;white-space:nowrap}
+.dir.to-sap{background:var(--his-soft);color:var(--his)}
+.dir.to-his{background:var(--sap-soft);color:var(--sap)}
+.dir.manual{background:var(--usr-soft);color:var(--usr)}
+.tag{display:inline-block;font-size:11.5px;padding:0 7px;border-radius:4px;border:1px solid var(--rule);color:var(--muted);white-space:nowrap}
+.tag.sync{border-color:var(--his);color:var(--his)}
+.tag.async{border-color:var(--brk);color:var(--brk)}
+.tag.query{border-color:var(--sap);color:var(--sap)}
+.st{display:inline-block;font-size:11.5px;font-weight:500;padding:1px 9px;border-radius:999px;white-space:nowrap;border:1px solid}
+.st.ok{border-color:var(--ok);color:var(--ok)}
+.st.part{border-color:var(--brk);color:var(--brk)}
+.st.no{border-color:var(--muted);color:var(--muted)}
+.st.test{border-color:var(--warn);color:var(--warn)}
+.tablewrap{overflow-x:auto;margin-top:16px;border:1px solid var(--rule);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;line-height:1.55}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--rule)}
+th{font-family:var(--display);font-weight:600;font-size:12.5px;letter-spacing:.03em;color:var(--muted);background:var(--surface-2);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.id{font-family:var(--mono);font-weight:500;white-space:nowrap}
+tr.grp td{background:var(--surface-2);font-family:var(--display);font-weight:600;font-size:13px;color:var(--ink)}
+pre{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--sap);border-radius:0 8px 8px 0;padding:12px 14px;overflow-x:auto;font-size:12.5px;line-height:1.6;margin:14px 0 0;max-width:none}
+pre code{background:none;padding:0;font-size:12.5px;white-space:pre}
+.note{border-left:3px solid var(--brk);background:var(--brk-soft);padding:10px 14px;border-radius:0 6px 6px 0;margin-top:16px;max-width:78ch;font-size:14px}
+.note.warn{border-left-color:var(--warn);background:var(--warn-soft)}
+.note.sap{border-left-color:var(--sap);background:var(--sap-soft)}
+figure{margin:22px 0 0}
+figcaption{font-size:13px;color:var(--muted);margin-top:8px;max-width:80ch}
+.diagram{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:10px}
+.diagram svg{display:block;max-width:none;height:auto;font-family:var(--body)}
+.arch svg{max-width:100%;min-width:760px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--muted);margin-top:14px}
+.legend i{display:inline-block;width:26px;height:0;border-top:2.5px solid;vertical-align:middle;margin-right:6px}
+.legend i.dash{border-top-style:dashed}
+.legend i.dot{border-top-style:dotted;border-top-width:3px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:16px;max-width:none}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:14px 16px}
+.card h4{font-size:15px;margin-bottom:6px}
+.card ul{margin:0;padding-left:18px;font-size:14px}
+.card li+li{margin-top:4px}
+.scn-head{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-top:34px}
+.scn-head h3{margin:0}
+.steps{font-size:14px;margin-top:10px}
+details{margin-top:14px;background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:10px 14px;max-width:none}
+summary{cursor:pointer;font-family:var(--display);font-weight:600}
+.lesson{display:grid;grid-template-columns:34px minmax(0,1fr);gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--rule);max-width:84ch}
+.lesson:last-child{border-bottom:0}
+.lesson .i{font-family:var(--mono);color:var(--brk);font-weight:500;padding-top:2px}
+.lesson h4{font-size:15.5px}
+.lesson p{margin:2px 0 0;font-size:14px;color:var(--muted)}
+.foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--muted)}
+.foot code{font-size:11.5px}
+/* activity diagram classes */
+.ad .lane-bg{stroke:none}
+.ad .lane-sep{stroke:var(--rule);stroke-width:1}
+.ad .lane-h{font-family:var(--display);font-weight:600;font-size:12.5px}
+.ad .node{stroke-width:1.4}
+.ad .node-t{font-size:11.8px;fill:var(--ink)}
+.ad .node-t.b{font-weight:600}
+.ad .edge{fill:none;stroke-width:1.5}
+.ad .edge.back{stroke-dasharray:5 4}
+.ad .edge.seq{stroke-dasharray:2 4}
+.ad .e-lbl{font-size:11px;fill:var(--muted)}
+.ad .e-bg{fill:var(--surface)}
+.k-usr{--c:var(--usr);--cs:var(--usr-soft)}
+.k-his{--c:var(--his);--cs:var(--his-soft)}
+.k-brk{--c:var(--brk);--cs:var(--brk-soft)}
+.k-sap{--c:var(--sap);--cs:var(--sap-soft)}
+.ad .lane-bg.k{fill:var(--cs);opacity:.38}
+.ad .lane-hd{fill:var(--cs)}
+.ad .lane-h{fill:var(--c)}
+.ad .node{fill:var(--surface);stroke:var(--c)}
+.ad .node.start{fill:var(--cs)}
+.ad .node.end{fill:var(--c)}
+.ad .node-t.on-dark{fill:var(--surface)}
+.ad .node.dec{fill:var(--cs)}
+.ad .edge.e0{stroke:var(--muted)} .ad .ah.e0{fill:var(--muted)}
+.ad .edge.e1{stroke:var(--his)} .ad .ah.e1{fill:var(--his)}
+.ad .edge.e2{stroke:var(--sap)} .ad .ah.e2{fill:var(--sap)}
+/* architecture svg */
+.arch .box{fill:var(--surface);stroke-width:1.5}
+.arch .zone{stroke-width:1;stroke-dasharray:4 4;fill:none}
+.arch .t{font-size:12px;fill:var(--ink)}
+.arch .t.h{font-family:var(--display);font-weight:700;font-size:14px}
+.arch .t.s{font-size:11px;fill:var(--muted)}
+.arch .t.m{font-family:var(--mono);font-size:10.5px;fill:var(--muted)}
+.arch .ln{fill:none;stroke-width:2}
+.arch .his-s{stroke:var(--his)} .arch .his-f{fill:var(--his)} .arch .his-bg{fill:var(--his-soft)}
+.arch .sap-s{stroke:var(--sap)} .arch .sap-f{fill:var(--sap)} .arch .sap-bg{fill:var(--sap-soft)}
+.arch .brk-s{stroke:var(--brk)} .arch .brk-f{fill:var(--brk)} .arch .brk-bg{fill:var(--brk-soft)}
+.arch .usr-s{stroke:var(--usr)} .arch .mut-s{stroke:var(--muted)} .arch .mut-f{fill:var(--muted)}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="สารบัญ">
+  <b>สารบัญ</b>
+  <ol>
+    <li><a href="#summary">สรุปสั้น</a></li>
+    <li><a href="#arch">สถาปัตยกรรม</a></li>
+    <li><a href="#inventory">จุดเชื่อมต่อทั้งหมด</a></li>
+    <li><a href="#coverage">ต่อแล้ว / ยังไม่ต่อ</a></li>
+    <li><a href="#how">เชื่อมต่อแบบไหน</a></li>
+    <li><a href="#tech">สำหรับทีมเทคนิค</a></li>
+    <li><a href="#gl">การลงบัญชี GLI01</a></li>
+    <li><a href="#stock">คลังพัสดุ &amp; Movement Type</a></li>
+    <li><a href="#impact">User Action ที่กระทบ ERP</a></li>
+    <li><a href="#activity">Activity Diagrams</a></li>
+    <li><a href="#ops">Log, Error, Retry</a></li>
+    <li><a href="#lessons">บทเรียนสำหรับโปรเจคใหม่</a></li>
+    <li><a href="#glossary">อภิธานศัพท์</a></li>
+    <li><a href="#sources">แหล่งอ้างอิง</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">DT-HIS (HAOS) · DT-ERP (SAP) · คณะทันตแพทยศาสตร์ ม.มหิดล</div>
+  <h1>การเชื่อมต่อ HIS <span class="arrow">⇄</span> SAP ERP</h1>
+  <p class="lede">เอกสารนี้อธิบายว่าระบบ HIS ส่งและรับข้อมูลกับ SAP ที่จุดไหนบ้าง ใช้เทคโนโลยีอะไร และการกระทำของผู้ใช้แต่ละอย่างทำให้เกิดอะไรขึ้นอีกฝั่ง สำหรับทีม ERP, ทีม IT และผู้เกี่ยวข้องที่กำลังจะทำ Interface SAP ในโปรเจคถัดไป</p>
+  <div class="meta">
+    <span>อ้างอิงโค้ด: <b>branch develop @ 7ef937eda3</b></span>
+    <span>ประกอบกับเอกสาร: <b>SDA-SAP Interface Spec V.1.0.0, FS/TS ฝั่ง SAP, Solution โยธี–จักรี (28 ม.ค. 2026)</b></span>
+    <span>จัดทำ: <b>19 ก.ย. 2026</b></span>
+  </div>
+</header>
+
+<!-- ============ 1. SUMMARY ============ -->
+<section id="summary">
+  <h2><span class="n">01</span>สรุปสั้นใน 1 นาที</h2>
+  <div class="keyfacts">
+    <div class="fact"><div class="k">14 <small>เส้น interface</small></div><p><span class="dir to-sap">HIS → SAP</span> 6 เส้น (GLI01, MMI01, MMI02, MMI02-Dispensing, MMI03, MMI04) และ <span class="dir to-his">SAP → HIS</span> 8 เส้น (HRO01, MMO01–03, AP01, FM01, CO01, CO02)</p></div>
+    <div class="fact"><div class="k">SOAP <small>Web Service</small></div><p>ทุกเส้นใช้ SOAP 1.1 ฝั่ง SAP เปิด Web Service (<code>Y*</code> function) ให้เรียก และ SAP เรียกกลับเข้ามาผ่าน SOAP ไม่มีการใช้ไฟล์หรือ RFC ตรง</p></div>
+    <div class="fact"><div class="k">4 <small>ระบบในเส้นทาง</small></div><p><b>SAP ⇄ Interface App ⇄ SAP Broker ⇄ HIS</b> — HIS ไม่ต่อ SAP โดยตรง และ Broker ของเราก็ไม่ต่อ SAP โดยตรง ทุกข้อความผ่าน Interface App ของ Vendor SAP</p></div>
+    <div class="fact"><div class="k">Real-time <small>+ batch 1 เส้น</small></div><p>ส่วนใหญ่เป็นแบบ synchronous — ผู้ใช้กดแล้วรอผล SAP ทันที ยกเว้นการจ่ายยาผู้ป่วยที่ส่งแบบ batch job</p></div>
+  </div>
+  <ul style="margin-top:20px">
+    <li><b>SAP เป็นเจ้าของ Master Data</b> (วัสดุ/ยา, หน่วยนับ, ผู้ขาย, ศูนย์ต้นทุน, Internal Order, Functional Area, บุคลากร) → ส่งมาสร้าง/แก้ใน HIS อัตโนมัติ</li>
+    <li><b>HIS เป็นต้นทางของธุรกรรม</b> — รายได้/ลูกหนี้ (ลงบัญชี FI), การเบิก-โอน-ตัดจ่ายคลังย่อย, การจ่ายยาผู้ป่วย, บิล Lab ทันตกรรม → ส่งไป SAP</li>
+    <li><b>SAP เป็นต้นทางของการเคลื่อนไหวคลังใหญ่</b> — การจ่ายของจากคลังใหญ่ให้คลังย่อย, รับของจาก PO, ยกเลิกรับ → ส่งกลับมาเพิ่ม/ลดสต็อกใน HIS</li>
+    <li><b>HIS ไม่ส่งเลขบัญชี GL</b> — ส่งเฉพาะ "รหัสจำแนกธุรกรรม" แล้ว SAP แปลงเป็นบัญชีเองด้วยตาราง Posting Rule</li>
+  </ul>
+</section>
+
+<!-- ============ 2. ARCHITECTURE ============ -->
+<section id="arch">
+  <h2><span class="n">02</span>สถาปัตยกรรมการเชื่อมต่อ</h2>
+  <p class="sub">SAP ตัวเดียวใช้ร่วมกันทั้งโยธีและจักรี ระหว่าง SAP กับ HIS มีตัวกลาง <b>2 ชั้น</b> คือ <b>Interface App</b> (พัฒนาโดย Vendor SAP เป็นระบบเดียวที่ติดต่อ SAP) และ <b>SAP Broker</b> (พัฒนาโดย Ayodia เป็นตัวที่คุยกับ HIS ทุก site) รวมเป็น 4 ระบบในเส้นทางเดียว</p>
+  <figure class="arch">
+    <div class="diagram">
+    <svg viewBox="0 0 1300 500" role="img" aria-label="เส้นทางข้อมูล 4 ระบบ: HIS โยธีและจักรี เรียก SAP Broker ผ่าน REST/JSON, Broker เรียก Interface App ของ Vendor SAP ผ่าน SOAP, Interface App เป็นระบบเดียวที่ติดต่อ SAP และส่งข้อมูลย้อนกลับตามเส้นทางเดียวกัน">
+      <defs>
+        <marker id="aH" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="his-f"/></marker>
+        <marker id="aS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="sap-f"/></marker>
+        <marker id="aM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="mut-f"/></marker>
+      </defs>
+
+      <rect x="10" y="10" width="270" height="480" rx="10" class="zone his-s"/>
+      <text x="26" y="32" class="t h" style="fill:var(--his)">HIS DTMU (แยกต่อ site)</text>
+      <text x="26" y="48" class="t s">พัฒนาโดย Ayodia</text>
+
+      <rect x="350" y="10" width="270" height="480" rx="10" class="zone brk-s"/>
+      <text x="366" y="32" class="t h" style="fill:var(--brk)">SAP Broker</text>
+      <text x="366" y="48" class="t s">พัฒนาโดย Ayodia</text>
+
+      <rect x="690" y="10" width="270" height="480" rx="10" class="zone mut-s"/>
+      <text x="706" y="32" class="t h">Interface App</text>
+      <text x="706" y="48" class="t s">พัฒนาโดย Vendor SAP</text>
+
+      <rect x="1030" y="10" width="260" height="480" rx="10" class="zone sap-s"/>
+      <text x="1046" y="32" class="t h" style="fill:var(--sap)">DT-ERP (SAP)</text>
+      <text x="1046" y="48" class="t s">ดูแลโดยทีม SAP</text>
+
+      <!-- HIS -->
+      <rect x="30" y="66" width="230" height="150" rx="8" class="box his-s"/>
+      <rect x="30" y="66" width="230" height="30" rx="8" class="his-bg"/>
+      <text x="44" y="86" class="t h">HIS โยธี</text>
+      <text x="44" y="116" class="t">HAOS.Main (Web API)</text>
+      <text x="44" y="134" class="t m">POST /api/sap-receive/{id}</text>
+      <text x="44" y="154" class="t">DB: TB_SAP_DATA_LOGS</text>
+      <text x="44" y="172" class="t s">log ฝั่ง HIS + หน้าจอ Log SAP</text>
+      <text x="44" y="194" class="t s">คลังย่อย D1, D2, D3 …</text>
+
+      <rect x="30" y="240" width="230" height="130" rx="8" class="box his-s"/>
+      <rect x="30" y="240" width="230" height="30" rx="8" class="his-bg"/>
+      <text x="44" y="260" class="t h">HIS จักรี</text>
+      <text x="44" y="290" class="t">HAOS.Main (instance แยก)</text>
+      <text x="44" y="308" class="t m">POST /api/sap-receive/{id}</text>
+      <text x="44" y="328" class="t">DB แยก + log แยก</text>
+      <text x="44" y="348" class="t s">คลังย่อย J1, J2, J3 …</text>
+
+      <rect x="30" y="400" width="230" height="64" rx="8" class="box usr-s"/>
+      <text x="44" y="424" class="t h" style="font-size:13px">Job Scheduler (cron)</text>
+      <text x="44" y="446" class="t m">POST /api/admin/jobs/… (X-Job-Key)</text>
+
+      <!-- Broker -->
+      <rect x="370" y="66" width="230" height="270" rx="8" class="box brk-s"/>
+      <rect x="370" y="66" width="230" height="30" rx="8" class="brk-bg"/>
+      <text x="384" y="86" class="t h">SAP Broker (HAOS.Sap)</text>
+      <text x="384" y="116" class="t">REST API ให้ HIS เรียก</text>
+      <text x="384" y="132" class="t m">/api/sap/query/{fn}[/batch]</text>
+      <text x="384" y="156" class="t">SOAP endpoint รับจากฝั่ง SAP</text>
+      <text x="384" y="172" class="t m">/HRO01.svc … /CO02.svc</text>
+      <text x="384" y="196" class="t">Site Routing</text>
+      <text x="384" y="212" class="t s">HRO01 → CostCenter</text>
+      <text x="384" y="228" class="t s">MMO03 → REQUESTER_STORE</text>
+      <text x="384" y="244" class="t s">อื่นๆ → broadcast ทุก site</text>
+      <text x="384" y="268" class="t">Admin Dashboard / Monitor</text>
+      <text x="384" y="284" class="t s">retry รายไซต์, dead-letter</text>
+      <text x="384" y="300" class="t s">MMO03 gap, export CSV</text>
+      <text x="384" y="322" class="t s">ใช้ร่วมกันทั้งโยธีและจักรี</text>
+      <rect x="370" y="360" width="230" height="74" rx="8" class="box brk-s"/>
+      <text x="384" y="382" class="t h" style="font-size:13px">Broker DB</text>
+      <text x="384" y="402" class="t m">TbSapTransactionLog</text>
+      <text x="384" y="420" class="t m">TbBrokerConfig</text>
+      <line x1="485" y1="336" x2="485" y2="360" class="ln mut-s" marker-end="url(#aM)"/>
+
+      <!-- Interface App -->
+      <rect x="710" y="66" width="230" height="200" rx="8" class="box mut-s"/>
+      <rect x="710" y="66" width="230" height="30" rx="8" style="fill:var(--surface-2)"/>
+      <text x="724" y="86" class="t h">Interface App</text>
+      <text x="724" y="116" class="t">ระบบเดียวที่ติดต่อ SAP</text>
+      <text x="724" y="136" class="t">รับจาก Broker → ส่งเข้า SAP</text>
+      <text x="724" y="156" class="t">รับจาก SAP → ส่งต่อ Broker</text>
+      <text x="724" y="178" class="t s">รูปแบบข้อความ, การตรวจสอบ</text>
+      <text x="724" y="194" class="t s">และ log เป็นไปตามที่</text>
+      <text x="724" y="210" class="t s">Vendor SAP กำหนด</text>
+      <text x="724" y="238" class="t s">ขอบเขตความรับผิดชอบ</text>
+      <text x="724" y="254" class="t s">ของทีม SAP / Vendor</text>
+
+      <rect x="710" y="300" width="230" height="86" rx="8" class="box mut-s"/>
+      <text x="724" y="322" class="t h" style="font-size:13px">จุดตัดความรับผิดชอบ</text>
+      <text x="724" y="344" class="t s">ปัญหาหลังจุดนี้ = ทีม SAP</text>
+      <text x="724" y="362" class="t s">ก่อนจุดนี้ = Ayodia</text>
+      <text x="724" y="378" class="t s">ตามรอยด้วย CorrelationId + SSBREF/IRNO</text>
+
+      <!-- SAP -->
+      <rect x="1050" y="66" width="220" height="150" rx="8" class="box sap-s"/>
+      <rect x="1050" y="66" width="220" height="30" rx="8" class="sap-bg"/>
+      <text x="1064" y="86" class="t h">SAP Web Service (Inbound)</text>
+      <text x="1064" y="114" class="t m">YSV_FIIB_GL01 (GLI01)</text>
+      <text x="1064" y="130" class="t m">YSV_MMI01_REQUEST_STOCK</text>
+      <text x="1064" y="146" class="t m">YSV_MMI02_ISSUE_TRANSF_SUBS</text>
+      <text x="1064" y="162" class="t m">YSV_MMI07_STOCK_BALANCE</text>
+      <text x="1064" y="178" class="t m">YSV_MMI04_LAB_DENTAL</text>
+      <text x="1064" y="200" class="t s">เปิดผ่าน SOAMANAGER</text>
+
+      <rect x="1050" y="240" width="220" height="130" rx="8" class="box sap-s"/>
+      <rect x="1050" y="240" width="220" height="30" rx="8" class="sap-bg"/>
+      <text x="1064" y="260" class="t h">SAP Outbound (Client Proxy)</text>
+      <text x="1064" y="288" class="t m">SI_HRO01_IN · SI_MMO01_IN</text>
+      <text x="1064" y="304" class="t m">SI_MMO02_IN · SI_MMO03_IN</text>
+      <text x="1064" y="320" class="t m">SI_AP01_IN · SI_FM01_IN</text>
+      <text x="1064" y="336" class="t m">SI_CO01_IN · SI_CO02_IN</text>
+      <text x="1064" y="356" class="t s">user exit / BAdI ตอน Save</text>
+
+      <rect x="1050" y="394" width="220" height="70" rx="8" class="box sap-s"/>
+      <text x="1064" y="416" class="t h" style="font-size:13px">SAP FI / MM / CO / HR / FM</text>
+      <text x="1064" y="436" class="t s">Posting Rule YTFIGL01_*</text>
+      <text x="1064" y="454" class="t s">log YTLOG · YINRP001/002</text>
+
+      <!-- flows to SAP -->
+      <path d="M260,120 H370" class="ln his-s" marker-end="url(#aH)"/>
+      <path d="M260,300 H320 V140 H370" class="ln his-s" marker-end="url(#aH)"/>
+      <text x="268" y="112" class="t s" style="fill:var(--his)">REST/JSON</text>
+      <text x="284" y="232" class="t m" style="fill:var(--his)">X-Broker-Key</text>
+      <text x="600" y="112" class="t s" style="fill:var(--his)">SOAP 1.1</text>
+      <path d="M600,120 H710" class="ln his-s" marker-end="url(#aH)"/>
+      <path d="M940,120 H1050" class="ln his-s" marker-end="url(#aH)"/>
+      <text x="948" y="112" class="t s" style="fill:var(--his)">เรียก Y-service</text>
+
+      <!-- flows to HIS -->
+      <path d="M1050,290 H990 V200 H940" class="ln sap-s" marker-end="url(#aS)"/>
+      <text x="954" y="222" class="t s" style="fill:var(--sap)">SOAP</text>
+      <path d="M710,230 H650 V190 H600" class="ln sap-s" marker-end="url(#aS)"/>
+      <text x="612" y="182" class="t s" style="fill:var(--sap)">SI_xxx_IN</text>
+      <path d="M370,210 H330 V160 H260" class="ln sap-s" marker-end="url(#aS)"/>
+      <path d="M370,225 H330 V330 H260" class="ln sap-s" marker-end="url(#aS)"/>
+      <text x="270" y="156" class="t m" style="fill:var(--sap)">route</text>
+
+      <path d="M140,400 V374" class="ln mut-s" marker-end="url(#aM)"/>
+      <path d="M210,400 V380 H300 V216" class="ln mut-s" marker-end="url(#aM)"/>
+    </svg>
+    </div>
+    <figcaption>เส้นสีเขียว = ข้อมูลไหลไปทาง SAP, เส้นสีน้ำเงิน = ข้อมูลไหลกลับมาทาง HIS · ข้อความทุกเส้นวิ่งผ่าน 4 ระบบเสมอ และตัวกลางฝั่งเรา (SAP Broker) คุยกับ <b>Interface App</b> ของ Vendor SAP เท่านั้น ไม่ได้ต่อ SAP โดยตรง · log มีอย่างน้อย 3 จุดที่ตามรอยได้: HIS, Broker และ SAP (รวม log ของ Interface App ตามที่ Vendor จัดให้)</figcaption>
+  </figure>
+
+  <div class="two">
+    <div class="card"><h4 style="color:var(--his)">HIS (HAOS.Main) — Ayodia</h4><ul>
+      <li>ระบบ HIS แยก instance/DB ต่อ site (โยธี, จักรี)</li>
+      <li>เรียก SAP Broker ด้วย HTTP POST JSON + header <code>X-Broker-Key</code> (ไม่รู้จัก Interface App และ SAP โดยตรง)</li>
+      <li>รับข้อมูลจาก Broker ที่ <code>POST /api/sap-receive/{interfaceId}</code></li>
+      <li>เก็บ log ที่ <code>TB_SAP_DATA_LOGS</code> / <code>…_DETAILS</code> ดูได้ที่เมนู Admin › Log การเชื่อมต่อ SAP</li>
+    </ul></div>
+    <div class="card"><h4 style="color:var(--brk)">SAP Broker (HAOS.Sap) — Ayodia</h4><ul>
+      <li>.NET 8 Web API แยก process, DB ของตัวเอง (<code>HAOS_Sap_Broker</code>)</li>
+      <li>ขาไป: แปลง JSON จาก HIS → SOAP ส่งให้ Interface App ผ่าน WCF proxy ที่ generate จาก WSDL</li>
+      <li>ขากลับ: เปิด SOAP endpoint (<code>*.svc</code>) รับข้อความ → log → route → fan-out ไป HIS แต่ละ site</li>
+      <li>ตอบกลับด้วย HTTP 200 + ตาราง ResponseData เสมอ (ไม่ส่ง SOAP Fault เพราะจะทำให้คิวขาออกฝั่ง SAP ค้าง)</li>
+      <li><b>ไม่เรียก SAP โดยตรง</b> — ปลายทางที่ตั้งค่าไว้คือ Interface App</li>
+    </ul></div>
+    <div class="card"><h4>Interface App — Vendor SAP</h4><ul>
+      <li>พัฒนาและดูแลโดย Vendor ของ SAP อยู่ระหว่าง SAP กับ SAP Broker</li>
+      <li>เป็นระบบเดียวที่ติดต่อกับ SAP ทั้งขาเข้าและขาออก</li>
+      <li>รูปแบบข้อความ การตรวจสอบ และ log ภายใน เป็นไปตามที่ Vendor กำหนด</li>
+      <li>เป็นจุดตัดความรับผิดชอบ: ปัญหาหลังจุดนี้คุยกับทีม SAP ก่อนจุดนี้คุยกับ Ayodia</li>
+    </ul></div>
+    <div class="card"><h4 style="color:var(--sap)">SAP (DT-ERP) — ทีม SAP</h4><ul>
+      <li>Inbound: RFC function module <code>Y*</code> เปิดเป็น Web Service ผ่าน SOAMANAGER ให้ Interface App เรียก</li>
+      <li>Outbound: user exit / BAdI ทำงานตอนผู้ใช้กด Save ใน T-code (เช่น MM01, MIGO, XK01) → ABAP Client Proxy เรียก <code>SI_{ID}_IN</code> ของ Broker แบบ real-time</li>
+      <li>บันทึกทุกรายการใน <code>YTLOG</code> และใช้กุญแจจาก HIS ตรวจซ้ำ ส่งซ้ำรายการที่สำเร็จแล้วจะถูกปฏิเสธ</li><li>แปลงรหัสจาก HIS เป็นบัญชี GL, Cost Center และ Internal Order ด้วยตาราง <code>YTFIGL01_*</code></li>
+      <li>มีรายงาน Interface / Error ฝั่ง SAP (YINRP001, YINRP002)</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ============ 3. INVENTORY ============ -->
+<section id="inventory">
+  <h2><span class="n">03</span>จุดเชื่อมต่อทั้งหมด</h2>
+  <p class="sub">รหัส Interface ตั้งจาก <b>มุมมองของ SAP</b>: <code>…I…</code> = Inbound เข้า SAP (HIS → SAP), <code>…O…</code> = Outbound ออกจาก SAP (SAP → HIS)</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>ID</th><th>ชื่อ</th><th>SAP Service / Object</th><th>เกิดเมื่อ (Trigger)</th><th>รูปแบบ</th><th>ผลที่ HIS</th></tr></thead>
+    <tbody>
+      <tr class="grp"><td colspan="6"><span class="dir to-sap">HIS → SAP</span>&nbsp; ธุรกรรมที่เกิดใน HIS แล้วส่งไป SAP</td></tr>
+      <tr><td class="id">GLI01</td><td>FI Posting Document<br><span class="sub">รายได้, มัดจำ, ส่วนลด, ตั้งหนี้, รับชำระหนี้, ลดหนี้, หนี้สูญ, กลับรายการ</span></td><td><code>YSV_FIIB_GL01</code><br>BAPI_ACC_DOCUMENT_POST · Company 1000</td><td>ฝ่ายบัญชีกด <b>"ส่งข้อมูลลงบัญชี"</b> บนเอกสารที่อนุมัติแล้ว</td><td><span class="tag sync">sync</span> manual<br>1 call ต่อเอกสาร</td><td>เอกสาร → <b>Posted</b> (เลข SAPREF อยู่ใน log)</td></tr>
+      <tr><td class="id">MMI01</td><td>Request for Stock<br><span class="sub">คลังย่อยขอเบิกจากคลังใหญ่</span></td><td><code>YSV_MMI01_REQUEST_STOCK</code><br>Reservation (MB21) สำหรับ stock item · PR (NB) สำหรับ non-stock (MRP Z1)</td><td>อนุมัติใบเบิกขั้นสุดท้าย (311) · ยกเลิก/ปิดใบเบิก (312, No more issue)</td><td><span class="tag sync">sync</span> ใน transaction เดียวกับการอนุมัติ</td><td>เก็บ <code>RSNUM/RSPOS</code> หรือ <code>BANFN/BNFPO</code> ต่อรายการ</td></tr>
+      <tr><td class="id">MMI02</td><td>Issue / Transfer Sub-store<br><span class="sub">โอนระหว่างคลังย่อย, ยืม, คืน, ตัดจ่าย</span></td><td><code>YSV_MMI02_ISSUE_TRANSF_SUBS</code><br>BAPI_GOODSMVT_CREATE (Mat. Doc)</td><td>อนุมัติโอน (311) · ให้ยืม · รับคืน · อนุมัติตัดจ่าย (201/202/91xx/Z0x) เฉพาะประเภทที่ติด InterfaceFlag</td><td><span class="tag sync">sync</span> all-or-nothing</td><td>สต็อกคลังย่อยเปลี่ยนตามปกติ</td></tr>
+      <tr><td class="id">MMI02<br><span class="sub">Dispensing</span></td><td>จ่ายยา/เวชภัณฑ์ให้ผู้ป่วย และรับคืน</td><td>service เดียวกับ MMI02<br><code>S01</code>/<code>R01</code> → SAP แปลงเป็น 931/932 (ซื้อมา) หรือ 901/902 (ผลิตเอง)</td><td>Job รวบรวมรายการจ่ายยาของวันที่ปิดแล้ว (cron ทุก 15 นาที)</td><td><span class="tag async">batch</span> 1 call ต่อใบสั่งยา/ใบคืน</td><td>Queue → Sent + เลข Mat. Doc</td></tr>
+      <tr><td class="id">MMI03</td><td>Stock Balance Enquiry<br><span class="sub">ถามยอดคงเหลือคลังใหญ่</span></td><td><code>YSV_MMI07_STOCK_BALANCE</code><br>ตรรกะเดียวกับ MB52 (ระดับ Storage Location)</td><td>เปิดหน้าเลือกพัสดุ (เบิก/โอน/ยืม/ตัดจ่าย), รายงาน "พัสดุคงคลัง (SAP)", ตอน submit ใบเบิก</td><td><span class="tag query">query</span> read-only</td><td>แสดงยอด / snapshot AvailableQty</td></tr>
+      <tr><td class="id">MMI04</td><td>Lab ทันตกรรม &amp; วัสดุรากเทียม</td><td><code>YSV_MMI04_LAB_DENTAL</code><br>หาสัญญา → Earmarked Fund, PO (5030), Release, SES</td><td>ยืนยัน "ส่ง Interface SAP" บิล Lab / บิลวัสดุพิเศษที่ตรวจรับแล้ว</td><td><span class="tag sync">sync</span> 1 transaction ต่อบิล</td><td>บิล → <b>Success</b></td></tr>
+
+      <tr class="grp"><td colspan="6"><span class="dir to-his">SAP → HIS</span>&nbsp; Master Data และการเคลื่อนไหวคลังใหญ่ที่เกิดใน SAP</td></tr>
+      <tr><td class="id">HRO01</td><td>Personnel Master</td><td>HR-PA (PERNR)</td><td>Save ใน PA30 / PA40 (กรองตำแหน่ง+CC ด้วย YTHR_CONTROL)</td><td><span class="tag sync">push</span> route ตาม CostCenter</td><td>สร้าง/แก้ <code>TB_EMPLOYEES</code> (+ รหัสแพทย์ถ้า EMPLOYEE_TYPE = X)</td></tr>
+      <tr><td class="id">MMO01</td><td>Material (Stock) Master</td><td>Material (MATNR)</td><td>MM01 / MM02 / MM06 (เมื่อมี Valuation Type แล้ว)</td><td><span class="tag sync">push</span> broadcast</td><td>upsert <code>TBM_EXPENSES</code> (ErpCode) + ผูกทุกคลังย่อย</td></tr>
+      <tr><td class="id">MMO02</td><td>UoM Conversion</td><td>Alternative UoM</td><td>ส่งคู่กับ MMO01 เมื่อหน่วยแปลงเปลี่ยน</td><td><span class="tag sync">push</span> broadcast</td><td><code>TBM_GOODS_UNITS</code></td></tr>
+      <tr><td class="id">MMO03</td><td>Stock Transfer Main / Goods Receipt</td><td>Material Doc · Mvt 311 / 312 / 105 / 106</td><td>Post เอกสาร MIGO ที่เข้าคลังย่อย 3001–3005 (YTMMO03_CONTROL)</td><td><span class="tag sync">push</span> route ตาม REQUESTER_STORE</td><td>สร้างเอกสารรับ/จ่าย, Lot, Stock card, ปรับสถานะใบเบิก</td></tr>
+      <tr><td class="id">AP01</td><td>Supplier (Vendor) Master</td><td>Vendor (LIFNR) กลุ่ม Z100/Z200/Z300</td><td>XK01 / XK02 / XK06</td><td><span class="tag sync">push</span> broadcast</td><td><code>TBM_VENDORS</code></td></tr>
+      <tr><td class="id">FM01</td><td>Functional Area (ผลผลิต)</td><td>FM (FKBER)</td><td>FM_FUNCTION</td><td><span class="tag sync">push</span> broadcast</td><td><code>TBM_PRODUCTS</code></td></tr>
+      <tr><td class="id">CO01</td><td>Cost Center (+ Clinic)</td><td>CO (KOSTL กลุ่ม C0317*)</td><td>KS01 / KS02 / KS04</td><td><span class="tag sync">push</span> broadcast</td><td><code>TBM_FUND_CENTERS</code></td></tr>
+      <tr><td class="id">CO02</td><td>Internal Order (+ หลักสูตร)</td><td>CO (AUFNR, Z101 = หลักสูตร)</td><td>KO01 / KO02</td><td><span class="tag sync">push</span> broadcast</td><td><code>TBM_PROGRAMS</code></td></tr>
+
+      <tr class="grp"><td colspan="6"><span class="dir manual">ไม่มี Interface</span>&nbsp; ผู้ดูแลทั้งสองฝั่งต้องตั้งค่าให้ตรงกันด้วยมือ</td></tr>
+      <tr><td class="id">—</td><td colspan="5">Movement Type (Stock Activity Code) · แหล่งเงิน = Plant (<code>1030</code> รายได้, <code>2030</code> แผ่นดิน) · รหัสคลังหลัก/คลังย่อย (Storage Location) · ประเภทผู้ขาย · Valuation Type (ซื้อมา/ผลิตเอง) · Material Type · หน่วยนับ · รูปแบบยา · <b>รหัส GL Interface</b> (Transaction/Line/Receive Type, Activity Code) ที่หน้า AR › Interface Settings ต้องตรงกับ Posting Rule ฝั่ง SAP</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">ไม่มี interface สำหรับ PO, ใบแจ้งหนี้ผู้ขาย (AP invoice), การจ่ายเงินผู้ขาย, สินทรัพย์ และ Customer master — งานเหล่านี้ทำใน SAP ทั้งหมด HIS รู้เรื่อง PO เฉพาะตอนของถูกรับเข้าคลังย่อย (MMO03 Mvt 105)</div>
+</section>
+
+<!-- ============ 04 COVERAGE ============ -->
+<section id="coverage">
+  <h2><span class="n">04</span>ต่อแล้วอะไรบ้าง ยังไม่ต่ออะไรบ้าง</h2>
+  <p class="sub">มองเป็นรายโมดูลของ SAP — <span class="st ok">ต่อแล้ว</span> มี interface ใช้งานจริง · <span class="st part">ต่อบางส่วน</span> ต่อเฉพาะบางงานในโมดูล · <span class="st no">ยังไม่ต่อ</span> ทำใน SAP ล้วน ไม่มีข้อมูลวิ่งถึงกัน</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>โมดูล SAP</th><th>สถานะ</th><th>ที่ต่อแล้ว</th><th>ที่ยังไม่ต่อ (ทำใน SAP ล้วน)</th></tr></thead>
+    <tbody>
+      <tr><td><b>MM-IM</b><br><span class="sub">คลังและสินค้าคงคลัง</span></td><td><span class="st ok">ต่อแล้ว</span></td><td>ครบที่สุดในบรรดาทุกโมดูล — Material master + หน่วยแปลง (MMO01/02), สอบถามยอดคงเหลือ (MMI03), ขอเบิก (MMI01), จ่ายจากคลังใหญ่/รับของ/ยกเลิก (MMO03), โอน-ยืม-คืน-ตัดจ่าย (MMI02), จ่ายยาผู้ป่วย (MMI02 Dispensing)</td><td>การตรวจนับคลังใหญ่, การปรับปรุงสต็อกฝั่งคลังใหญ่ (คลังย่อยส่ง Z01/Z02 ได้)</td></tr>
+      <tr><td><b>FI-GL</b><br><span class="sub">บัญชีแยกประเภท</span></td><td><span class="st ok">ต่อแล้ว</span></td><td>เอกสารบัญชีทุกประเภทจาก HIS ผ่าน GLI01 (รายได้, มัดจำ, ส่วนลด, ตั้งหนี้, รับชำระหนี้, ลดหนี้, หนี้สูญ) และการกลับรายการ (<code>InversionFlg = X</code>)</td><td>รายการปรับปรุงที่บัญชีทำเองใน SAP, งบการเงิน, การปิดงวด — HIS ไม่รับข้อมูลบัญชีกลับเลย (ทางเดียว)</td></tr>
+      <tr><td><b>FI-AR</b><br><span class="sub">ลูกหนี้</span></td><td><span class="st part">ต่อบางส่วน</span></td><td>ยอดตั้งหนี้ / รับชำระ / ลดหนี้ / หนี้สูญ ส่งเป็นบรรทัด GL</td><td><b>Customer master ไม่ต่อ</b> — SAP ไม่มีทะเบียนผู้ป่วย/หน่วยงานคู่สัญญา ทะเบียนลูกหนี้รายตัวอยู่ที่ HIS · อายุหนี้และการติดตามหนี้ดูที่ HIS</td></tr>
+      <tr><td><b>FI-AP</b><br><span class="sub">เจ้าหนี้</span></td><td><span class="st part">ต่อบางส่วน</span></td><td>Vendor master ส่งมาจาก SAP (AP01) · บิล Lab ทันตกรรม/วัสดุรากเทียมส่งไปให้ SAP ตั้งเรื่องจ่าย (MMI04)</td><td>ใบแจ้งหนี้ผู้ขายทั่วไป, การตั้งหนี้จาก GR/IR, การจ่ายเงิน, เช็ค, ภาษีหัก ณ ที่จ่าย — HIS ไม่รู้สถานะการจ่ายเงินให้ผู้ขาย</td></tr>
+      <tr><td><b>MM-PU</b><br><span class="sub">จัดซื้อ</span></td><td><span class="st part">ต่อบางส่วน</span></td><td>HIS ทำให้เกิดเอกสารจัดซื้อทางอ้อม: ใบเบิกรายการ non-stock → PR (MMI01), บิล Lab → Earmarked Fund + PO + SES (MMI04) · HIS เก็บเลข PR (BANFN) ไว้</td><td><b>สถานะ PR/PO ไม่ส่งกลับ HIS</b> (อนุมัติถึงไหน, สั่งซื้อหรือยัง, ของจะมาเมื่อไหร่) · การสร้าง PO เอง, สัญญา, ผู้ขายเสนอราคา · HIS จะรู้อีกทีตอนของเข้าคลังย่อย (MMO03 Mvt 105)</td></tr>
+      <tr><td><b>CO</b><br><span class="sub">บัญชีต้นทุน</span></td><td><span class="st part">ต่อบางส่วน</span></td><td>Master: Cost Center (CO01) และ Internal Order (CO02) ส่งมาให้ HIS ใช้ · ทุกบรรทัดที่ส่งไป SAP แนบ Cost Center / Internal Order / Functional Area ไปด้วย</td><td>การปันส่วนต้นทุน, การวางแผน, รายงานต้นทุนต่อหน่วยบริการ — ไม่มีข้อมูลต้นทุนย้อนกลับมาที่ HIS</td></tr>
+      <tr><td><b>FM</b><br><span class="sub">งบประมาณ</span></td><td><span class="st part">ต่อบางส่วน</span></td><td>Functional Area (ผลผลิต) ส่งมาจาก SAP (FM01) · แหล่งเงินใช้เป็น Plant (1030 รายได้ / 2030 แผ่นดิน) ในทุกเอกสารคลัง · การกันงบ (Earmarked Fund) SAP สร้างเองตอนรับบิล Lab</td><td><b>ยอดงบประมาณคงเหลือไม่ส่งมา HIS</b> — ตอนเบิกพัสดุ HIS เห็นแต่ยอดของคงเหลือ ไม่เห็นงบคงเหลือ · การโอน/ปรับงบทำใน SAP</td></tr>
+      <tr><td><b>HR-PA</b><br><span class="sub">ทะเบียนบุคลากร</span></td><td><span class="st ok">ต่อแล้ว</span></td><td>ข้อมูลบุคลากรและแพทย์ส่งมาสร้าง user + รหัสแพทย์ใน HIS (HRO01) กรองด้วยตำแหน่งและ cost center</td><td>โครงสร้างองค์กร (OM), เวลาทำงาน (Time), เงินเดือน (Payroll) — <b>ค่าตอบแทนแพทย์ (DF) ที่ HIS คำนวณ ไม่ได้ส่งไป SAP</b></td></tr>
+      <tr><td><b>FI-AA</b><br><span class="sub">สินทรัพย์ถาวร</span></td><td><span class="st no">ยังไม่ต่อ</span></td><td>—</td><td>ทะเบียนครุภัณฑ์, ค่าเสื่อมราคา, การตัดจำหน่ายสินทรัพย์ ทำใน SAP ทั้งหมด</td></tr>
+      <tr><td><b>FI</b> Bank / Cash</td><td><span class="st no">ยังไม่ต่อ</span></td><td>—</td><td>การกระทบยอดธนาคาร, statement, การรับโอนจริงจากธนาคาร · HIS ส่งแค่ "ช่องทางรับเงิน" ไปเป็นรหัสจำแนกใน GLI01</td></tr>
+      <tr><td><b>SD / PS / PM / QM</b></td><td><span class="st no">ไม่ได้ใช้</span></td><td>—</td><td>ไม่อยู่ในขอบเขตของระบบ</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>ช่องว่างที่ผู้ใช้ถามบ่อย</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>คำถาม</th><th>ตอนนี้ทำอย่างไร</th><th>ถ้าจะต่อ ต้องเพิ่มเส้นแบบไหน</th></tr></thead>
+    <tbody>
+      <tr><td>"ใบขอซื้อที่ส่งไป อนุมัติถึงไหนแล้ว"</td><td>โทร/ถามฝ่ายพัสดุ แล้วเปิดดูใน SAP</td><td>เส้น SAP → HIS ส่งสถานะ PR/PO อ้างเลข PR ที่ HIS เก็บไว้แล้ว</td></tr>
+      <tr><td>"หน่วยงานมีงบเหลือเท่าไหร่"</td><td>ดูใน SAP เท่านั้น</td><td>เส้น query แบบเดียวกับ MMI03 แต่ถามยอดงบ (FM)</td></tr>
+      <tr><td>"จ่ายเงินบริษัท Lab ไปหรือยัง"</td><td>ติดตามกับฝ่ายการเงิน/SAP</td><td>เส้น SAP → HIS ส่งสถานะการตั้งหนี้/จ่ายเงินกลับมาที่บิล</td></tr>
+      <tr><td>"ค่าตอบแทนแพทย์ (DF) ลงบัญชีหรือยัง"</td><td>HIS คำนวณและจ่ายนอกระบบ SAP</td><td>เส้น HIS → SAP เพิ่มประเภทธุรกรรมใน GLI01 หรือส่งเข้า HR/AP</td></tr>
+      <tr><td>"ปรับปรุงรายการค้างรับสิ้นเดือน"</td><td>Posting Rule ฝั่ง SAP มีรหัส <code>UN</code> รองรับแล้ว แต่ยังไม่มีจุดส่งใน HIS</td><td>เปิดจุดส่งฝั่ง HIS ใช้เส้น GLI01 เดิมได้เลย</td></tr>
+      <tr><td>"ผู้ป่วย/หน่วยงานเป็นลูกหนี้รายตัวใน SAP ได้ไหม"</td><td>ไม่ได้ SAP เห็นเป็นยอดรวมตามรหัสจำแนก</td><td>ต้องมี Customer master + เปลี่ยนวิธี post จาก GL เป็น AR รายราย (งานใหญ่)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>ความพร้อมของเส้นที่มีอยู่</h3>
+  <p>สถานะทดสอบด้านล่างอ้างจากไฟล์ spec และ test case ที่ได้รับ (SDA-SAP-Interface Spec V.1.0.0) <b>ควรยืนยันสถานะล่าสุดกับทีมทดสอบอีกครั้ง</b> ส่วนโค้ดฝั่ง HIS และ Broker มีครบทุกเส้นแล้ว</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>เส้น</th><th>สถานะทดสอบตาม spec</th><th>ประเด็นค้าง</th></tr></thead>
+    <tbody>
+      <tr><td class="id">MMO01, MMO02, AP01, FM01, CO01, CO02</td><td><span class="st ok">Pass</span></td><td>—</td></tr>
+      <tr><td class="id">MMI01 (ขอเบิก), MMI03 (ถามยอด), MMO03 (จ่าย/รับของ)</td><td><span class="st ok">Pass</span></td><td>—</td></tr>
+      <tr><td class="id">HRO01 (บุคลากร)</td><td><span class="st test">In progress</span></td><td>รอยืนยัน field กับทีม SAP ตาม MOM</td></tr>
+      <tr><td class="id">MMI02 Dispensing (จ่ายยา)</td><td><span class="st test">In progress</span></td><td>เส้นที่ปริมาณสูงสุด ต้องทดสอบยอดสะสมและการคืนข้ามวัน</td></tr>
+      <tr><td class="id">MMI02 Transfer sub-store</td><td><span class="st test">ยังไม่เคยทดสอบ</span></td><td>spec ระบุว่า web service เส้นนี้ยังไม่เคยถูกทดสอบ</td></tr>
+      <tr><td class="id">MMI04 (Lab / วัสดุรากเทียม)</td><td><span class="st test">เส้นใหม่</span></td><td>เพิ่มทีหลัง ยังไม่มีผลทดสอบในไฟล์ spec</td></tr>
+      <tr><td class="id">GLI01 (ลงบัญชี)</td><td><span class="st part">Pass บางเคส</span></td><td>เคสที่ยังไม่ผ่าน: ส่วนลด (map rights code ไม่ได้), รับชำระหนี้ลูกหนี้ทั่วไป (ต้องไม่ส่ง HN Type), รายได้อื่นๆ และลดหนี้ลูกหนี้ทั่วไป (รอสรุปเคส)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">ข้อสังเกตสำหรับโปรเจคใหม่: เส้นที่ต่อแล้วเกือบทั้งหมดเป็น <b>ข้อมูลไหลทางเดียว</b> — HIS ส่งธุรกรรมไป SAP และ SAP ส่ง master data กับการเคลื่อนไหวคลังใหญ่มา HIS ยังไม่มีเส้นไหนที่ส่ง <b>สถานะของเอกสารใน SAP</b> (PR/PO, การจ่ายเงิน, งบคงเหลือ) กลับมาให้ผู้ใช้ HIS เห็น ซึ่งเป็นคำถามที่เจอบ่อยที่สุดหลัง go-live</div>
+</section>
+
+<!-- ============ 4. HOW ============ -->
+<section id="how">
+  <h2><span class="n">05</span>เชื่อมต่อแบบไหน</h2>
+
+  <h3>ช่องทางและรูปแบบข้อความ</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>ช่วง</th><th>Protocol</th><th>Endpoint</th><th>การยืนยันตัวตน</th><th>Timeout / Retry</th></tr></thead>
+    <tbody>
+      <tr><td>HIS → Broker</td><td>HTTP REST, JSON</td><td><code>POST /api/sap/query/{function}</code><br><code>POST /api/sap/query/{function}/batch</code></td><td>header <code>X-Broker-Key</code> (1 key ต่อ site) · rate limit 100 req/นาที</td><td>HIS รอ 15 วินาที (รายงานคงคลัง 20 วินาที) · ไม่ retry อัตโนมัติ</td></tr>
+      <tr><td>Broker → Interface App → SAP</td><td>SOAP 1.1 (WCF BasicHttpBinding)</td><td>ปลายทางที่ Broker ตั้งค่าไว้คือ Interface App ซึ่งส่งต่อไปยัง service <code>YSV_*</code> ของ SAP</td><td>HTTP Basic Auth ถ้าตั้ง user ไว้ในหน้า Admin ของ Broker (binding ฝั่ง SAP ตาม spec เดิมตั้งเป็น "No Authentication" + service user)</td><td>30 วินาที · ไม่ retry (เพราะเป็นการ post เอกสาร)</td></tr>
+      <tr><td>SAP → Interface App → Broker</td><td>SOAP 1.1 (ABAP Client Proxy, logical port <code>YLP_*</code>)</td><td><code>/{ID}.svc</code> operation <code>SI_{ID}_IN</code><br>namespace <code>urn:sap-com:document:sap:rfc:functions</code></td><td>อาศัยการจำกัดเครือข่าย (network trust)</td><td>SAP รอผลแบบ synchronous · รายการที่ error ใน YTLOG จะถูกส่งซ้ำอัตโนมัติเมื่อ Save object เดิมครั้งถัดไป (YOB_PREREQ)</td></tr>
+      <tr><td>Broker → HIS</td><td>HTTP REST, JSON</td><td><code>POST {site}/api/sap-receive/{id}</code></td><td><code>X-Broker-Key</code> + <code>X-Correlation-Id</code></td><td>15 วินาที/ครั้ง, retry 3 ครั้ง (Polly) + circuit breaker ต่อ site</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>ชื่อฟังก์ชันที่ HIS เรียก ≠ ชื่อที่ SAP ใช้</h3>
+  <p>HIS เรียก Broker ด้วยชื่อแบบ BAPI (เพื่อให้อ่านง่าย) แต่ปลายทางที่ทำงานจริงคือ <b>Y-wrapper service</b> ของ SAP ซึ่ง Interface App เป็นผู้เรียกให้ ไม่เคยเรียก BAPI มาตรฐานตรงๆ</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>ชื่อที่ HIS ส่ง</th><th>Interface</th><th>SAP Web Service → Operation</th><th>กุญแจอ้างอิงที่ SAP echo กลับ</th></tr></thead>
+    <tbody>
+      <tr><td class="id">BAPI_ACC_DOCUMENT_POST</td><td>GLI01</td><td><code>YSV_FIIB_GL01 → YfiibGl01</code></td><td><code>Ssbref</code> → ได้ <code>SAPREF</code></td></tr>
+      <tr><td class="id">BAPI_REQUISITION_CREATE</td><td>MMI01</td><td><code>YSV_MMI01_REQUEST_STOCK → YimibMmi01RequestStock</code></td><td><code>ImIrno-ลำดับ</code> → RSNUM/RSPOS หรือ BANFN/BNFPO</td></tr>
+      <tr><td class="id">BAPI_GOODSMVT_CREATE</td><td>MMI02</td><td><code>YSV_MMI02_ISSUE_TRANSF_SUBS → YimibMmi02IssueTransfSubs</code></td><td><code>ImIrno-ลำดับ</code> → MAT_DOC + DOC_YEAR</td></tr>
+      <tr><td class="id">BAPI_MMI03_STOCK_BALANCE</td><td>MMI03</td><td><code>YSV_MMI07_STOCK_BALANCE → YimibMmi07StockBalance</code></td><td>ตอบ LABST, MEINS, VERPR</td></tr>
+      <tr><td class="id">YimibMmi04LabDental</td><td>MMI04</td><td><code>YSV_MMI04_LAB_DENTAL → YimibMmi04LabDental</code></td><td><code>คลินิก|กลุ่มแพทย์|หลักสูตร|ประเภทงาน</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>ข้อตกลงเรื่องผลตอบกลับ (Response Convention)</h3>
+  <div class="two">
+    <div class="card"><h4><span class="dir to-sap">HIS → SAP</span></h4><ul>
+      <li>SAP ตอบเป็นตาราง <code>ExResponseData</code> (GL ใช้ <code>Tabout</code>) แถวละ <code>{DATE, TIME, SOURCE_KEY, FIELD, VALUE}</code></li>
+      <li>แถว <code>FIELD = "Error"</code> คือ error เชิงธุรกิจของรายการนั้น</li>
+      <li>batch ตอบผล <b>รายบรรทัด</b> → Broker สรุปเป็น SUCCESS / PARTIAL_SUCCESS / FAILED</li>
+      <li>ยกเลิก/กลับรายการ = ส่งเอกสารใหม่พร้อม flag (<code>InversionFlg = "X"</code>, <code>ImNomoreissue</code>) ไม่มี API ลบ</li>
+    </ul></div>
+    <div class="card"><h4><span class="dir to-his">SAP → HIS</span></h4><ul>
+      <li>Broker ตอบ SAP ด้วย HTTP 200 เสมอ พร้อม <code>ResponseData</code> <code>{DATE, TIME, SOURCE_KEY, FIELD, VALUE}</code></li>
+      <li><b>ตารางว่าง = สำเร็จทั้งหมด</b> · <code>FIELD = "Error"</code> = รายการที่ไม่ผ่าน · <code>FIELD = "DocRequestNo"</code> = เลขเอกสาร HIS ที่สร้าง (MMO03)</li>
+      <li>HIS ตอบ Broker เป็น HTTP 200 + <code>{success:false, errors[…]}</code> สำหรับ error ธุรกิจ</li>
+      <li>MMO03 ส่งซ้ำได้อย่างปลอดภัย — HIS ตอบ <code>IRNO_DUPLICATE</code> พร้อมเลขเอกสารเดิม</li>
+    </ul></div>
+  </div>
+
+  <h3>การแยกส่งโยธี / จักรี (Multi-site Routing)</h3>
+  <p>SAP ใช้ร่วมกัน แต่ HIS แยกกัน Broker จึงต้องตัดสินว่าข้อความจาก SAP ควรไป HIS ไหน โดยอ่านค่าจาก field ในข้อความเทียบกับตัวกรองที่ตั้งไว้ในหน้า Admin ของ Broker</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Interface</th><th>Field ที่ใช้ตัดสิน</th><th>พฤติกรรม</th></tr></thead>
+    <tbody>
+      <tr><td class="id">HRO01</td><td><code>COMPOSE_DEPT</code> (Cost Center)</td><td>ส่งเฉพาะ site ที่ cost center ตรง</td></tr>
+      <tr><td class="id">MMO03</td><td><code>REQUESTER_STORE</code> (Storage Location ของคลังย่อยผู้รับ)</td><td>ส่งเฉพาะ site ที่เป็นเจ้าของคลัง (D… = โยธี, J… = จักรี)</td></tr>
+      <tr><td class="id">อื่นๆ</td><td>—</td><td>broadcast ทุก site (master data ใช้ร่วมกัน)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>ถ้าหาปลายทางไม่เจอ Broker จะส่งทุก site (fail-open) และบันทึกเตือนไว้ ส่วนฝั่ง HIS → SAP ของจักรีใช้ Transaction Type ชุดแยก (เช่น <code>AR_MS</code>, <code>RC_MS</code>) ใน Posting Rule เพื่อให้ SAP แยกบัญชีได้</p>
+</section>
+
+<!-- ============ 05 TECH ============ -->
+<section id="tech">
+  <h2><span class="n">06</span>สำหรับทีมเทคนิค: รายละเอียดการเชื่อมต่อ</h2>
+  <p class="sub">ส่วนนี้ไว้คุยกับทีมพัฒนา/ทีม infra ทั้งสองฝั่ง — รูปแบบข้อความจริง, header, timeout, การตามรอย และ checklist ตอนเปิดเส้นใหม่</p>
+
+  <h3>6.1 ข้อความขาไป (HIS → Broker)</h3>
+  <p>ทุกเส้นใช้ endpoint เดียวกัน ต่างกันที่ชื่อฟังก์ชันและเนื้อ <code>parameters</code> ค่าทุกตัวส่งเป็น string</p>
+  <pre><code>POST /api/sap/query/BAPI_ACC_DOCUMENT_POST/batch
+X-Broker-Key: &lt;key ของ site&gt;
+Content-Type: application/json
+
+{
+  "functionName": "BAPI_ACC_DOCUMENT_POST",
+  "sourceSystem": "HAOS_MAIN",
+  "subFlow": null,
+  "parametersBatch": [
+    {
+      "Postdate": "20260919", "Docdate": "20260919",
+      "Ssbtrntyp": "AR", "Ssblinetyp": "AR9999",
+      "Ssbhntyp": "I", "Ssboblityp": "1", "Ssbrectyp": "",
+      "InversionFlg": "", "Amount": "1500.00",
+      "ClinicCode": "C0317201", "Doctortyp": "B", "Specialty": "...",
+      "Shift": "A1", "Ssbref": "A1-20260919-AR-...-AR6912-001-01",
+      "Totalrec": "2"
+    }
+  ]
+}</code></pre>
+  <p>คำตอบกลับมาเป็นผล <b>รายบรรทัด</b> จับคู่กันด้วย <code>sourceKey</code> (= business key ที่ส่งไป) ฝั่ง HIS ใช้ค่านี้ตัดสินว่าบรรทัดไหนต้องส่งซ้ำ</p>
+  <pre><code>{
+  "success": true,
+  "data": {
+    "correlationId": "9f3c…",
+    "allSuccess": false,
+    "items": [
+      { "sequence": 1, "success": true,  "sourceKey": "A1-2026…-01",
+        "sapDocRef": "1000001234", "sapDocType": null, "sapDocPosition": null,
+        "echoIrno": null, "errorMessage": null },
+      { "sequence": 2, "success": false, "sourceKey": "A1-2026…-02",
+        "errorMessage": "Mapping Rule Error: …" }
+    ]
+  }
+}</code></pre>
+  <div class="note">ชื่อ key ใน <code>parameters</code> ต้องตรงกับชื่อ property ของ proxy ที่ generate จาก WSDL (เทียบแบบไม่สนตัวพิมพ์) <b>key ที่สะกดผิดจะถูกทิ้งเงียบๆ</b> ไม่มี error — เป็นจุดที่พลาดบ่อยตอนเพิ่ม field ใหม่ ให้ตรวจด้วย SOAP XML ดิบใน log ของ Broker เสมอ</div>
+
+  <h3>6.2 ข้อความขากลับ (SAP → HIS)</h3>
+  <p>Broker แปลง SOAP เป็น JSON แล้ว POST ไปที่ HIS ของ site ที่เลือกได้ ตัวอย่าง MMO03 (ส่งเป็น array ได้ 1–100 รายการ)</p>
+  <pre><code>POST {site}/api/sap-receive/mmo03
+X-Broker-Key: &lt;key ของ site&gt;
+X-Correlation-Id: 9f3c…
+
+[ { "IRNO": "4900001234", "DOCUMENT_YEAR": "2026", "DOCUMENT_DATE": "20260919",
+    "FROM_REQUEST_IRNO": "0000012345", "REQUEST_SUFFIX": "0001",
+    "STOCK_ACTIVITY_CODE": "311", "STOCK_CODE": "10000123", "LOT_NO": "…",
+    "QTY": "10", "COST": "1250.00", "PURCHASE_BUDGET_CODE": "1030",
+    "REQUESTER_STORE": "D101", "DESTINATION_STORE": "1001",
+    "NO_MORE_ISSUE": "", "TOTAL_REC": "3" } ]</code></pre>
+  <p>HIS ตอบ HTTP 200 เสมอ (แม้ error เชิงธุรกิจ) แล้ว Broker แปลงกลับเป็นตาราง ResponseData ให้ SAP</p>
+  <pre><code>// HIS → Broker
+{ "success": false,
+  "results": [ { "irno": "4900001234", "stockCode": "10000123",
+                 "docRequestNo": "RC6909-0001" } ],
+  "errors":  [ { "recordIdentifier": "4900001234-10000124",
+                 "errorCode": "LOOKUP_EXPENSE_MISS",
+                 "errorMessage": "ไม่พบรหัสพัสดุในระบบ HIS" } ] }
+
+// Broker → SAP  (ตารางว่าง = สำเร็จทั้งหมด)
+&lt;ResponseData&gt;
+  &lt;item&gt;&lt;DATE&gt;20260919&lt;/DATE&gt;&lt;TIME&gt;103012&lt;/TIME&gt;
+        &lt;SOURCE_KEY&gt;4900001234-10000123&lt;/SOURCE_KEY&gt;
+        &lt;FIELD&gt;DocRequestNo&lt;/FIELD&gt;&lt;VALUE&gt;RC6909-0001&lt;/VALUE&gt;&lt;/item&gt;
+  &lt;item&gt;&lt;SOURCE_KEY&gt;4900001234-10000124&lt;/SOURCE_KEY&gt;
+        &lt;FIELD&gt;Error&lt;/FIELD&gt;&lt;VALUE&gt;ไม่พบรหัสพัสดุในระบบ HIS&lt;/VALUE&gt;&lt;/item&gt;
+&lt;/ResponseData&gt;</code></pre>
+
+  <h3>6.3 Header, สิทธิ์ และ rate limit</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Header / กลไก</th><th>ใช้ที่ไหน</th><th>รายละเอียด</th></tr></thead>
+    <tbody>
+      <tr><td class="id">X-Broker-Key</td><td>HIS → Broker และ Broker → HIS</td><td>key เดียวต่อ site ใช้ทั้งสองทิศทาง ออกใหม่ได้จากหน้า Admin ของ Broker · <b>ฝั่ง HIS ถ้าไม่ตั้งค่า key จะข้ามการตรวจ</b> ต้องบังคับตั้งใน production</td></tr>
+      <tr><td class="id">X-Correlation-Id</td><td>Broker → HIS</td><td>บังคับ ถ้าไม่มีตอบ 400 · เป็นกุญแจตามรอยข้ามระบบ</td></tr>
+      <tr><td class="id">X-Job-Key</td><td>Scheduler → HIS</td><td>สำหรับ endpoint ของ job (จ่ายยา, end-of-day)</td></tr>
+      <tr><td class="id">Basic Auth</td><td>Broker → ปลายทาง SOAP</td><td>ตั้ง user/password ในหน้า Admin ของ Broker (เก็บใน DB ไม่ได้อยู่ในไฟล์ config)</td></tr>
+      <tr><td class="id">JWT (role admin)</td><td>หน้า Admin / Monitor ของ Broker</td><td>cookie <code>admin_token</code> อายุ 480 นาที</td></tr>
+      <tr><td class="id">Rate limit</td><td>Broker</td><td>100 req/นาที ต่อ key · SOAP endpoint 50 req/นาที ต่อ IP</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>6.4 Timeout, retry และ circuit breaker (ค่าที่ตั้งไว้จริง)</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>ช่วง</th><th>Timeout</th><th>Retry</th><th>หมายเหตุ</th></tr></thead>
+    <tbody>
+      <tr><td>HIS → Broker</td><td>15 วินาที (รายงานคงคลัง 20 วินาที)</td><td>ไม่มี</td><td>ผู้ใช้กดทำรายการซ้ำเอง ระบบข้ามบรรทัดที่สำเร็จแล้ว</td></tr>
+      <tr><td>Broker → ปลายทาง SOAP</td><td>30 วินาที (<code>SapSettings:TimeoutSeconds</code>)</td><td>ไม่มี</td><td>ข้อความขนาดสูงสุด 1 MB (batch 4 MB)</td></tr>
+      <tr><td>Broker → HIS</td><td>15 วินาที/ครั้ง, รวม 60 วินาที</td><td>3 ครั้ง backoff 1 วินาที</td><td>circuit breaker ต่อ site: เปิดเมื่อ fail 50% ใน 30 วินาที (อย่างน้อย 5 ครั้ง) แล้วพัก 30 วินาที</td></tr>
+      <tr><td>Retry service ของ Broker</td><td>—</td><td>สูงสุด 5 ครั้ง เริ่ม 30 วินาที เพิ่มเป็น 2 เท่า สูงสุด 300 วินาที ±10%</td><td>poll ทุก 30 วินาที ครั้งละ 10 รายการ · ทำเฉพาะรายการ PARTIAL_SUCCESS (บาง site สำเร็จ) · เช็ค health ของ site ก่อนส่ง</td></tr>
+      <tr><td>Job จ่ายยา</td><td>—</td><td>3 ครั้งต่อรายการ แล้วเป็น Skipped</td><td>ส่งครั้งละ 200 แถว ย้อนหลังได้ 30 วัน เฉพาะวันที่ปิดแล้ว</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note warn">ลำดับ timeout ควรเป็น <b>ต้นทางยาวกว่าปลายทาง</b> ตอนนี้กลับกัน (HIS 15 วินาที &lt; Broker 30 วินาที) ถ้าจะออกแบบใหม่ให้ตั้ง HIS &gt; Broker &gt; Interface App &gt; SAP และเผื่อเวลาให้ช่วง Interface App ด้วย</div>
+
+  <h3>6.5 กุญแจธุรกิจและการกันข้อมูลซ้ำ</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Interface</th><th>Business key</th><th>ใครกันซ้ำ</th><th>พฤติกรรมเมื่อส่งซ้ำ</th></tr></thead>
+    <tbody>
+      <tr><td class="id">GLI01</td><td><code>SSBREF</code> (กะ-วันที่-รหัสจำแนก-เลขเอกสาร-ลำดับ ตัดท้าย 80 ตัว)</td><td>SAP (YTLOG)</td><td>ถ้าเคยสำเร็จแล้วจะถูกปฏิเสธพร้อมเลขเอกสารเดิม</td></tr>
+      <tr><td class="id">MMI01 / MMI02</td><td><code>IRNO + ลำดับรายการ</code></td><td>SAP (YTLOG)</td><td>เหมือนกัน · MMI01 ยังตรวจ echo ของ IRNO ที่ SAP ส่งกลับ ไม่ตรงจะ rollback (<code>MMI01_WEMPF_MISMATCH</code>)</td></tr>
+      <tr><td class="id">MMI04</td><td><code>คลินิก|กลุ่มแพทย์|หลักสูตร|ประเภทงาน</code></td><td>SAP</td><td>ชื่อไฟล์/ชุดข้อมูลที่ทำแล้วถูกล็อกไม่ให้ทำซ้ำ</td></tr>
+      <tr><td class="id">MMO03</td><td><code>IRNO + STOCK_CODE</code> (+ ลำดับ)</td><td>HIS</td><td>ตอบ <code>IRNO_DUPLICATE</code> พร้อมเลขเอกสารเดิม ถือเป็นสำเร็จ — SAP ส่งซ้ำได้ปลอดภัย</td></tr>
+      <tr><td class="id">MMO01 / MMO02 / CO / FM / AP / HR</td><td>รหัสหลัก (STOCK_CODE, KOSTL, LIFNR, PERNR …)</td><td>HIS</td><td>เป็น upsert อยู่แล้ว ส่งซ้ำได้</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>6.6 การตามรอยเมื่อมีปัญหา (end-to-end trace)</h3>
+  <ol>
+    <li><b>เริ่มที่ HIS</b> — Admin › Log การเชื่อมต่อ SAP ค้นด้วยเลขเอกสารหรือช่วงเวลา ดู <code>Status</code>, <code>SyncStatus</code> และ <code>CorrelationId</code></li>
+    <li><b>ต่อที่ Broker</b> — Dashboard ค้นด้วย <code>CorrelationId</code> เดียวกัน ดู JSON และ <b>SOAP XML ดิบ</b> ทั้งขาไปขากลับ กับผลรายไซต์ (<code>DispatchResults</code>)</li>
+    <li><b>ถ้าข้อความออกจาก Broker แล้ว</b> — ส่งต่อให้ทีม SAP พร้อม <code>SOURCE_KEY</code> (SSBREF / IRNO) และเวลา เพื่อดู log ของ Interface App และ <code>YTLOG</code> (T-code YINRP001 / YINRP002)</li>
+    <li>เวลาใน log ของ Broker เป็นเวลาไทย (ไม่ใช่ UTC) เวลาเทียบกับระบบอื่นให้ระวังจุดนี้</li>
+  </ol>
+
+  <h3>6.7 Error code ที่ต้องตกลงร่วมกัน</h3>
+  <div class="two">
+    <div class="card"><h4>ถาวร (ส่งซ้ำก็ไม่ผ่าน ต้องแก้ข้อมูล)</h4><ul>
+      <li><code>VALIDATION_*</code> — ข้อมูลไม่ครบ/ผิดรูปแบบ</li>
+      <li><code>LOOKUP_*_MISS</code> — ไม่พบ master (พัสดุ, คลัง, แหล่งเงิน, หน่วยนับ)</li>
+      <li><code>DB_CONSTRAINT_*</code> — ผิดกฎข้อมูลปลายทาง</li>
+      <li><code>PARENT_NOT_FOUND</code> — อ้างใบเบิก/เอกสารต้นทางไม่เจอ</li>
+      <li><code>UNKNOWN_INTERFACE</code> — ส่งมาผิดเส้น (ป้องกันการตอบรับเงียบ)</li>
+    </ul></div>
+    <div class="card"><h4>ชั่วคราว (ระบบ retry ให้)</h4><ul>
+      <li><code>TIMEOUT</code>, <code>DB_ERROR</code>, <code>INTERNAL_ERROR</code></li>
+      <li>HTTP 5xx, 408, 429 และ network error</li>
+      <li>HTTP 200 ที่ไม่มี field <code>success</code> → ถือเป็นชั่วคราว (<code>UNRECOGNIZED_RESPONSE</code>)</li>
+    </ul></div>
+    <div class="card"><h4>ข้อความ error ที่ส่งออกนอกระบบ</h4><ul>
+      <li>ข้อความเชิงธุรกิจส่งกลับตามจริง เพื่อให้ผู้ใช้แก้ได้</li>
+      <li>ข้อความระบบ (DB, internal, timeout) ถูกแทนด้วยข้อความกลางพร้อม CorrelationId ไม่ให้ชื่อตาราง/host หลุดออกไป</li>
+    </ul></div>
+  </div>
+
+  <h3>6.8 Config ที่ต้องเตรียมในแต่ละ environment</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>ระบบ</th><th>คีย์ (ชื่อคีย์ ไม่ใช่ค่า)</th></tr></thead>
+    <tbody>
+      <tr><td>HIS</td><td><code>SapBrokerSettings:BrokerBaseUrl</code>, <code>:BrokerKey</code>, <code>:SiteName</code>, <code>:Mmi02FunctionName</code>, <code>:Mmi04FunctionName</code></td></tr>
+      <tr><td>Broker</td><td><code>ConnectionStrings:SapBrokerConnection</code>, <code>SapSettings:ServiceEndpoints:{GLI01|MMI01|MMI02|MMI03|MMI04}</code> (serviceUrl, wsdlUrl), <code>SapSettings:TimeoutSeconds</code>, user/password ของปลายทาง (เก็บใน DB), <code>SiteSettings:Sites[]</code> (Name, BaseUrl, BrokerKey, HealthCheckPath), <code>RetrySettings</code>, <code>SimulatorSettings:Enabled</code> (ต้อง false ใน production)</td></tr>
+      <tr><td>Scheduler</td><td>cron เรียก <code>/api/admin/jobs/run-dispensing-interface-gathering</code> (แนะนำทุก 15 นาที) และ <code>/run-dispensing-eod</code> (ท้ายวัน) พร้อม <code>X-Job-Key</code></td></tr>
+      <tr><td>ฝั่ง SAP</td><td>service <code>YSN_*</code> / binding <code>YBN_*</code> (inbound), logical port <code>YLP_*</code> + URL ปลายทาง (outbound), number range สำหรับ log, ตาราง control/mapping (<code>YTFIGL01_*</code>, <code>YTMMO03_CONTROL</code>, <code>YTHR_CONTROL_*</code>)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>6.9 ขั้นตอนเปิด interface เส้นใหม่</h3>
+  <ol class="steps">
+    <li>ตกลง <b>ทิศทาง, trigger, ความถี่</b> และ business key ที่ใช้กันซ้ำ</li>
+    <li>ทำ mapping sheet รายฟิลด์ (ชื่อ, ชนิด, ความยาว, บังคับ/ไม่บังคับ, ค่าที่เป็นไปได้, ที่มาในแต่ละระบบ)</li>
+    <li>ฝั่ง SAP เปิด service แล้วส่ง <b>WSDL</b> ให้ → generate proxy ใน Broker → เพิ่ม mapping ชื่อฟังก์ชัน + endpoint config</li>
+    <li>ถ้าเป็นขา SAP → HIS: เพิ่ม SOAP endpoint ใน Broker, เพิ่ม handler ที่ <code>/api/sap-receive/{id}</code> ของ HIS และ <b>กำหนดฟิลด์ที่ใช้ route ไปแต่ละ site</b></li>
+    <li>ตกลงรูปแบบ response และรายการ error code ก่อนเริ่มเขียน</li>
+    <li>เตรียม test kit (ยิงตรงเข้าปลายทาง), simulator/mock และ scenario ครอบทุก movement type / transaction type</li>
+    <li>ทดสอบเคสไม่สวย: partial fail, ส่งซ้ำ, timeout, master data ขาด, ข้อความเกินขนาด</li>
+    <li>ก่อน go-live: ตรวจ log ครบทุกชั้น, ตั้ง monitor/alert, และตกลงช่องทางแจ้งปัญหาแต่ละช่วงของเส้นทาง</li>
+  </ol>
+</section>
+
+<!-- ============ 5. GL ============ -->
+<section id="gl">
+  <h2><span class="n">07</span>การลงบัญชีรายได้และลูกหนี้ (GLI01)</h2>
+  <p class="sub">งานการเงินทั้งหมดของ HIS ไป SAP ผ่านเส้นเดียวคือ GLI01 — ส่งเป็นบรรทัด GL พร้อมรหัสจำแนก ไม่ส่งเลขบัญชี</p>
+
+  <figure>
+    <div class="diagram">
+    <svg viewBox="0 0 900 250" role="img" aria-label="HIS ส่งรหัส Transaction, Line, HN Type, พันธกิจ, ช่องทางรับเงิน ไปยัง SAP; SAP ใช้ Posting Rule แปลงเป็น Doc Type, Posting Key และบัญชี GL">
+      <defs><marker id="gA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--his)"/></marker></defs>
+      <g class="arch">
+      <rect x="10" y="20" width="300" height="210" rx="8" class="box his-s"/>
+      <rect x="10" y="20" width="300" height="30" rx="8" class="his-bg"/>
+      <text x="24" y="40" class="t h">HIS ส่ง (1 บรรทัด)</text>
+      <text x="24" y="72" class="t m">SSBTRNTYP  = AR   (ตั้งหนี้)</text>
+      <text x="24" y="92" class="t m">SSBLINETYP = AR9999 (ลูกหนี้)</text>
+      <text x="24" y="112" class="t m">SSBHNTYP   = I   (ผู้ป่วยใน)</text>
+      <text x="24" y="132" class="t m">SSBOBLITYP = 1   (การเรียนการสอน)</text>
+      <text x="24" y="152" class="t m">SSBRECTYP  = —   (ช่องทางรับเงิน)</text>
+      <text x="24" y="172" class="t m">CLINIC_CODE, DOCTORTYP, RIGHT_CODE</text>
+      <text x="24" y="192" class="t m">AMOUNT, SHIFT, SSBREF, INVERSION_FLG</text>
+      <text x="24" y="214" class="t s">รหัสมาจากหน้า AR › Interface Settings</text>
+
+      <rect x="360" y="70" width="180" height="110" rx="8" class="box sap-s"/>
+      <rect x="360" y="70" width="180" height="30" rx="8" class="sap-bg"/>
+      <text x="374" y="90" class="t h">Posting Rule</text>
+      <text x="374" y="120" class="t m">YTFIGL01_PSTRUL</text>
+      <text x="374" y="142" class="t">→ PSTRULE AR001</text>
+      <text x="374" y="162" class="t s">ตั้งอยู่ใน SAP</text>
+
+      <rect x="590" y="20" width="300" height="210" rx="8" class="box sap-s"/>
+      <rect x="590" y="20" width="300" height="30" rx="8" class="sap-bg"/>
+      <text x="604" y="40" class="t h">SAP บันทึกบัญชี</text>
+      <text x="604" y="72" class="t">Doc Type 93</text>
+      <text x="604" y="98" class="t m">PK 40  Dr 1202015050</text>
+      <text x="604" y="116" class="t s">ลูกหนี้</text>
+      <text x="604" y="142" class="t m">PK 50  Cr 4103010020</text>
+      <text x="604" y="160" class="t s">รายได้ค่าการเรียนการสอน</text>
+      <text x="604" y="190" class="t">Header "บันทึกลูกหนี้ ประจำวันที่ &amp;1"</text>
+      <text x="604" y="212" class="t s">+ ClinicCode → Cost Center</text>
+      <path d="M310,125 H360" class="ln his-s" marker-end="url(#gA)"/>
+      <path d="M540,125 H590" class="ln his-s" marker-end="url(#gA)"/>
+      </g>
+    </svg>
+    </div>
+    <figcaption>ตัวอย่างจากตาราง Posting Rule V2 (27 มี.ค. 2569): ตั้งหนี้ผู้ป่วยใน ค่าการเรียนการสอน. HIS แค่จำแนกธุรกรรม ส่วนการเลือกบัญชีเป็นหน้าที่ของ SAP ถ้าจะเปลี่ยนผังบัญชีก็แก้ที่ SAP ได้โดยไม่ต้องแก้ HIS · SAP ยังใช้ <code>YTFIGL01_KOSTL</code> (คลินิก + กลุ่มแพทย์ → Cost Center) และ <code>YTFIGL01_ORDER</code> (กลุ่มแพทย์ + หลักสูตร → Internal Order) · กลับรายการ (X) = สลับ Posting Key เป็น 50/40</figcaption>
+  </figure>
+
+  <h3>ธุรกรรมที่ส่งผ่าน GLI01</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Trans. Type</th><th>ความหมาย</th><th>Line Type</th><th>เอกสาร HIS ที่ส่ง</th><th>หน้าจอ HIS</th></tr></thead>
+    <tbody>
+      <tr><td class="id">RC</td><td>รับชำระเงิน</td><td><code>FRONT</code> หน้าเคาน์เตอร์ · <code>SERCH</code> รายได้อื่น · <code>AR9999/AR9998</code> รับชำระหนี้</td><td>ใบเสร็จรับเงิน, ใบเสร็จรับชำระหนี้ (ผู้ป่วย/หน่วยงาน)</td><td>ตรวจสอบรายได้ · ตรวจสอบรับชำระหนี้</td></tr>
+      <tr><td class="id">DE</td><td>เงินมัดจำ</td><td><code>DEPRC</code> รับมัดจำ · <code>DEPUS</code> ใช้/ยึดมัดจำ</td><td>ใบรับมัดจำ, ใบเสร็จที่ชำระด้วยมัดจำ</td><td>ตรวจสอบรายได้</td></tr>
+      <tr><td class="id">DI</td><td>ส่วนลด</td><td><code>DISCO</code> (+ RIGHT_CODE)</td><td>ใบเสร็จที่มีส่วนลด, ใบแจ้งหนี้ส่วนลดสวัสดิการ</td><td>ตรวจสอบรายได้ · ตั้งหนี้</td></tr>
+      <tr><td class="id">AR</td><td>ตั้งหนี้</td><td><code>AR9999</code> ลูกหนี้ · <code>AR9998</code> รายได้ค้างรับ</td><td>เอกสารตั้งหนี้ (1 บรรทัดต่อรายการในบิล)</td><td>ตรวจสอบใบแจ้งหนี้ › ตั้งหนี้</td></tr>
+      <tr><td class="id">CN</td><td>ลดหนี้</td><td>ลูกหนี้ผู้ป่วย / หน่วยงาน</td><td>ใบลดหนี้</td><td>ตรวจสอบลดหนี้</td></tr>
+      <tr><td class="id">BD</td><td>หนี้สูญ</td><td>ลูกหนี้ผู้ป่วย / หน่วยงาน</td><td>ใบลดหนี้ประเภทหนี้สูญ</td><td>ตรวจสอบลดหนี้</td></tr>
+      <tr><td class="id">(X)</td><td>กลับรายการ</td><td>ชุดเดิม + <code>INVERSION_FLG = X</code></td><td>ยกเลิกใบแจ้งหนี้ที่ลงบัญชีแล้ว, ยกเลิกรับชำระหนี้</td><td>Invoice Reversal · Receipt Reversal</td></tr>
+      <tr><td class="id">UN</td><td>ปรับปรุงสิ้นเดือน</td><td><code>UNSET</code>, <code>SERCH</code></td><td colspan="2">มีใน Posting Rule ฝั่ง SAP แต่ยังไม่พบจุดส่งใน HIS</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <b>สิ่งที่ทีม ERP ควรรู้:</b> การส่งเป็น <b>รายเอกสาร</b> (บรรทัดละรายการในบิล/รายการชำระ) ไม่ได้รวมยอดรายวันตามที่ spec ฉบับแรกตั้งใจไว้ · <b>ไม่มีอะไรส่งอัตโนมัติ</b> ตอนแคชเชียร์รับเงิน ต้องรอฝ่ายบัญชีอนุมัติแล้วกดส่ง · การยกเลิกใบเสร็จหน้าเคาน์เตอร์ไม่ส่งการกลับรายการไป SAP · ทุกหน้าจอมีปุ่ม <b>Preview GL payload</b> ที่ export ไฟล์ Excel <code>GLI01_*.xlsx</code> ให้ตรวจข้อมูลก่อนส่งจริงได้
+  </div>
+</section>
+
+<!-- ============ 6. STOCK ============ -->
+<section id="stock">
+  <h2><span class="n">08</span>คลังพัสดุ: ใครทำอะไรที่ระบบไหน</h2>
+  <p class="sub">หลักคือ <b>คลังใหญ่อยู่ใน SAP</b> (โยธี: 1001, 1003, 2001, 2002, 5001 · จักรี: 2003) ส่วน <b>คลังย่อยอยู่ใน HIS</b> ทั้งสองระบบต้องถือสต็อกให้ตรงกันผ่าน interface</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>กระบวนการ</th><th>ทำที่ระบบ</th><th>Interface</th><th>Movement Type</th></tr></thead>
+    <tbody>
+      <tr><td>1. เบิก (คลังย่อย → คลังใหญ่)</td><td>HIS</td><td><span class="dir to-sap">MMI01</span></td><td>311 ขอเบิก · 312 ยกเลิก</td></tr>
+      <tr><td>2. จ่าย (คลังใหญ่ → คลังย่อย)</td><td>SAP (MIGO)</td><td><span class="dir to-his">MMO03</span></td><td>311 จ่ายตามใบเบิก · 312 รับคืน</td></tr>
+      <tr><td>3. โอน (คลังย่อย ⇄ คลังย่อย), ยืม, คืน</td><td>HIS</td><td><span class="dir to-sap">MMI02</span></td><td>311</td></tr>
+      <tr><td>4. จ่ายออก/ขายให้ผู้ป่วย</td><td>HIS (ห้องยา)</td><td><span class="dir to-sap">MMI02 Dispensing</span></td><td>S01 ขาย · R01 คืน → SAP แปลงเป็น 931/932 (ซื้อมา) หรือ 901/902 (ผลิตเอง)</td></tr>
+      <tr><td>5. ตัดจ่าย (คลังย่อย)</td><td>HIS</td><td><span class="dir to-sap">MMI02</span></td><td>201 จ่ายเข้า Cost Center · 202 กลับรายการ · 909/910 ตัดจำหน่าย + เหตุผล 0001–0003 (HIS เก็บเป็น 9091–9103) · Z01/Z02 ปรับยอดตรวจนับ</td></tr>
+      <tr><td>6. รับของจากผู้ขาย (PO) เข้าคลังย่อย</td><td>SAP</td><td><span class="dir to-his">MMO03</span></td><td>105 รับ · 106 ยกเลิกรับ (PR/PO ต้องใส่เลขใบเบิก HIS ใน Tracking No. — บังคับด้วย ZPUEN002)</td></tr>
+      <tr><td>7. สอบถามยอดคงเหลือคลังใหญ่</td><td>HIS ถาม SAP</td><td><span class="dir to-sap">MMI03</span></td><td>— (query)</td></tr>
+      <tr><td>จักรี: คลังใหญ่จักรี ⇄ คลังใหญ่</td><td>SAP</td><td>ไม่มี interface</td><td>ทำใน SAP ล้วน</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>ตารางจับคู่รหัสหลัก</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>HIS</th><th>SAP</th><th>ที่มา</th></tr></thead>
+    <tbody>
+      <tr><td><code>TBM_EXPENSES.ErpCode</code></td><td>Material No. (MATNR)</td><td>MMO01</td></tr>
+      <tr><td><code>TBM_WORK_PLACES.WorkCode</code></td><td>Storage Location (LGORT)</td><td>ตั้งค่ามือ</td></tr>
+      <tr><td><code>TBM_FUND_SOURCES.FundSourceCode</code></td><td>Plant (WERKS) 1030 รายได้ / 2030 แผ่นดิน</td><td>ตั้งค่ามือ</td></tr>
+      <tr><td><code>TB_LOTS.LotNo</code></td><td>Batch (CHARG)</td><td>MMO03</td></tr>
+      <tr><td><code>TBM_UNITS.UnitCode</code> / <code>TBM_GOODS_UNITS</code></td><td>UoM / Alternative UoM</td><td>ตั้งค่ามือ / MMO02</td></tr>
+      <tr><td><code>TBM_ISSUE_TYPES.IssueTypeCode</code> + InterfaceFlag</td><td>Movement Type ของการตัดจ่าย</td><td>ตั้งค่ามือ</td></tr>
+      <tr><td><code>TBM_FUND_CENTERS</code> / <code>TBM_PROGRAMS</code> / <code>TBM_PRODUCTS</code></td><td>Cost Center / Internal Order / Functional Area</td><td>CO01 / CO02 / FM01</td></tr>
+      <tr><td><code>TBM_VENDORS.VendorCode</code></td><td>Vendor (LIFNR)</td><td>AP01</td></tr>
+      <tr><td><code>TB_GOODS_REQUEST_ITEMS.SapDocNumber/Position</code></td><td>Reservation RSNUM/RSPOS หรือ PR BANFN/BNFPO</td><td>ผลตอบกลับ MMI01</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ 7. IMPACT MATRIX ============ -->
+<section id="impact">
+  <h2><span class="n">09</span>User Action ไหนมีผลกับอีกฝั่ง</h2>
+  <p class="sub">ใช้ตารางนี้ตอบคำถาม "ถ้าผู้ใช้กดปุ่มนี้ จะเกิดอะไรขึ้นในอีกระบบ" ได้ทันที</p>
+
+  <h3><span class="dir to-sap">HIS → SAP</span> การกระทำใน HIS ที่มีผลกับ ERP</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>ผู้ใช้ / หน้าจอ HIS</th><th>การกระทำ</th><th>ผลใน SAP</th><th>ถ้า SAP ล้มเหลว</th></tr></thead>
+    <tbody>
+      <tr><td>บัญชี · ตรวจสอบรายได้</td><td>กด "ส่งข้อมูลลงบัญชี" ใบเสร็จ/มัดจำ</td><td>FI document (RC/DE/DI)</td><td>ใบเสร็จยังเป็น Approved, แสดง error ต่อใบ</td></tr>
+      <tr><td>บัญชี · ตั้งหนี้</td><td>กด "ส่งข้อมูลลงบัญชี" เอกสารตั้งหนี้</td><td>FI document (AR / DI)</td><td>คงสถานะ Approved</td></tr>
+      <tr><td>บัญชี · รับชำระหนี้</td><td>ส่งใบเสร็จรับชำระหนี้ลงบัญชี</td><td>FI (RC + AR9999/AR9998) ตัดลูกหนี้</td><td>คงสถานะ</td></tr>
+      <tr><td>บัญชี · ลดหนี้</td><td>ส่งใบลดหนี้/หนี้สูญลงบัญชี (เดี่ยวหรือ batch)</td><td>FI (CN / BD)</td><td>ใบที่ล้มเหลวถูกรายงาน ใบอื่นไปต่อ</td></tr>
+      <tr><td>การเงิน · ยกเลิกบิล</td><td>ยกเลิกบิลที่ลงบัญชีแล้วแต่ยังไม่ชำระ</td><td>ยังไม่มีผล จนกว่าบัญชีอนุมัติแล้ว Post Invoice Reversal → FI กลับรายการ (X)</td><td>Reversal คงสถานะ Approved</td></tr>
+      <tr><td>การเงิน · ยกเลิกรับชำระหนี้</td><td>ยกเลิกใบเสร็จรับชำระหนี้</td><td>หลัง Post Receipt Reversal → FI กลับรายการ (X)</td><td>หยุดที่ใบแรกที่ล้มเหลว</td></tr>
+      <tr><td>คลังย่อย · หัวหน้า</td><td>อนุมัติใบเบิกขั้นสุดท้าย</td><td>สร้าง Reservation (หรือ PR ถ้าไม่มีสต็อก)</td><td><b>การอนุมัติถูก rollback</b> ผู้ใช้ต้องกดใหม่</td></tr>
+      <tr><td>คลังย่อย</td><td>ยกเลิก / ปิดใบเบิก</td><td>ปิด Reservation (No more issue)</td><td>การยกเลิกถูก rollback</td></tr>
+      <tr><td>คลังย่อย</td><td>อนุมัติโอน / ให้ยืม / รับคืน</td><td>Goods movement 311 ระหว่าง Storage Location</td><td>rollback ทั้งเอกสาร</td></tr>
+      <tr><td>คลังย่อย</td><td>อนุมัติตัดจ่าย (ประเภทที่ติด InterfaceFlag)</td><td>Goods movement 201/202/91xx เข้า Cost Center / IO / FA</td><td>rollback</td></tr>
+      <tr><td>ห้องยา · เภสัชกร</td><td>จ่ายยา / รับคืนยา</td><td>ไม่เกิดทันที · job ส่ง S01/R01 หลังปิดวัน</td><td>job retry ได้ 3 รอบ แล้วเป็น Skipped</td></tr>
+      <tr><td>คลังย่อย / ผู้ขอเบิก</td><td>เปิดหน้าเลือกพัสดุ, รายงานคงคลัง SAP</td><td>อ่านยอดเท่านั้น (ไม่เปลี่ยนข้อมูล)</td><td>แสดงข้อความ ไม่มียอด</td></tr>
+      <tr><td>ห้องปฏิบัติการทันตกรรม / พัสดุ</td><td>ยืนยันส่ง SAP บิล Lab / วัสดุรากเทียม</td><td>SAP หาสัญญาแล้วสร้าง Earmarked Fund, PO, Release และ SES ให้อัตโนมัติ</td><td>บิลคงสถานะ "รอ Interface SAP"</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3><span class="dir to-his">SAP → HIS</span> การกระทำใน SAP ที่มีผลกับ HIS</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>ผู้ใช้ SAP</th><th>การกระทำ</th><th>ผลใน HIS</th><th>ผลกระทบต่อผู้ใช้ HIS</th></tr></thead>
+    <tbody>
+      <tr><td>คลังใหญ่</td><td>ทำจ่ายตาม Reservation (MIGO 311)</td><td>สร้างเอกสารจ่าย, เพิ่มสต็อกคลังย่อย, อัปเดตสถานะใบเบิก (จ่ายบางส่วน/ครบ)</td><td>คลังย่อยเห็นของเข้า และใบเบิกเปลี่ยนสถานะเอง</td></tr>
+      <tr><td>คลังใหญ่</td><td>ติด "No more issue" / รับคืน (312)</td><td>ปิดใบเบิก / ตัดสต็อกคลังย่อยคืน</td><td>ใบเบิกปิดโดยไม่ต้องทำใน HIS</td></tr>
+      <tr><td>คลังใหญ่ / จัดซื้อ</td><td>รับของจาก PO เข้าคลังย่อย (105) / ยกเลิกรับ (106)</td><td>สร้างเอกสารรับ, Lot, ราคาต่อหน่วย, วันหมดอายุ</td><td>สต็อกคลังย่อยเพิ่ม/ลดทันที</td></tr>
+      <tr><td>MM Master</td><td>สร้าง/แก้ Material (MM01/MM02/MM06)</td><td>สร้าง/แก้รายการยาและพัสดุ ผูกกับทุกคลังย่อย</td><td>รายการใหม่ใช้งานได้ทันทีทั้งสอง site</td></tr>
+      <tr><td>MM Master</td><td>เพิ่ม/ลบหน่วยแปลง</td><td>ปรับหน่วยแปลงของรายการ</td><td>จำนวนเบิก/จ่ายคำนวณตามหน่วยใหม่</td></tr>
+      <tr><td>AP</td><td>สร้าง/แก้/block vendor</td><td>ทะเบียนผู้ขาย</td><td>ใช้เลือก vendor ในบิล Lab / วัสดุพิเศษ</td></tr>
+      <tr><td>CO / FM</td><td>สร้าง/แก้ Cost Center, Internal Order, Functional Area</td><td>ศูนย์ต้นทุน, แผนงาน/หลักสูตร, ผลผลิต (+ สร้าง clinic code / specialty)</td><td>ใช้ในการตัดจ่ายและ GL</td></tr>
+      <tr><td>HR</td><td>สร้าง/แก้ข้อมูลบุคลากร</td><td>สร้าง/แก้พนักงาน (+ รหัสแพทย์)</td><td>ผู้ใช้/แพทย์ใหม่ปรากฏใน HIS ของ site ตาม cost center</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ 8. ACTIVITY ============ -->
+<section id="activity">
+  <h2><span class="n">10</span>Activity Diagrams: ตัวอย่างกรณีใช้งาน</h2>
+  <p class="sub">แต่ละ lane คือผู้ทำงานหรือระบบ อ่านจากบนลงล่าง สีของลูกศรบอกทิศทางข้อมูล</p>
+  <div class="legend">
+    <span><i style="border-color:var(--his)"></i>ข้อมูลไหลไปทาง SAP</span>
+    <span><i style="border-color:var(--sap)"></i>ข้อมูลไหลกลับมาทาง HIS</span>
+    <span><i style="border-color:var(--muted)"></i>ขั้นตอนภายในระบบเดียวกัน</span>
+    <span><i class="dash" style="border-color:var(--muted)"></i>วนกลับ / ทำซ้ำ</span>
+    <span><i class="dot" style="border-color:var(--muted)"></i>ลำดับเวลา (ไม่ใช่การส่งข้อมูล)</span>
+  </div>
+  <p class="sub" style="margin-top:8px">เพื่อให้ภาพอ่านง่าย diagram ย่อ <b>SAP Broker</b> (Ayodia) กับ <b>Interface App</b> (Vendor SAP) ไว้ใน lane เดียวกันชื่อ "ตัวกลาง" — ในความเป็นจริงข้อความต้องผ่านทั้งสองระบบตามลำดับเสมอ (ดูหัวข้อ 02) · <b>เส้นตอบกลับที่ลากข้าม lane ตัวกลางไปหา HIS หรือผู้ใช้โดยตรง ก็เป็นการย่อเช่นกัน</b> — คำตอบทุกครั้งเดินทางกลับตามเส้นทางเดิมผ่าน Interface App และ Broker</p>
+
+  <div class="scn-head"><h3>A. รับชำระเงินหน้าเคาน์เตอร์ → ลงบัญชี</h3><span class="dir to-sap">GLI01</span><span class="tag sync">sync · manual</span></div>
+  <figure><div class="diagram" id="ad-a"></div>
+  <figcaption>ตอนแคชเชียร์รับเงินยังไม่มีอะไรไป SAP ข้อมูลจะไปก็ต่อเมื่อฝ่ายบัญชีตรวจ อนุมัติ แล้วกดส่ง ถ้าส่งซ้ำหลัง error ระบบจะข้ามบรรทัดที่ SAP รับไปแล้ว (Smart Resume)</figcaption></figure>
+
+  <div class="scn-head"><h3>B. เบิกพัสดุจากคลังใหญ่ → SAP ทำจ่าย → ของเข้าคลังย่อย</h3><span class="dir to-sap">MMI03</span><span class="dir to-sap">MMI01</span><span class="dir to-his">MMO03</span></div>
+  <figure><div class="diagram" id="ad-b"></div>
+  <figcaption>เป็นกรณีไปกลับครบรอบ: HIS สร้างคำขอ SAP ออก Reservation แล้วเจ้าหน้าที่คลังใหญ่ทำจ่ายใน SAP ผลการจ่ายกลับมาผูกกับใบเบิกเดิมผ่านเลข RSNUM/RSPOS ถ้าเป็นรายการ non-stock (MRP type Z1) SAP จะเปิด PR แทน แล้วของจะเข้ามาทีหลังในรูป Mvt 105 ที่อ้างเลขใบเบิกเดิม</figcaption></figure>
+
+  <div class="scn-head"><h3>C. จ่ายยาผู้ป่วย → ตัดสต็อก SAP แบบ batch</h3><span class="dir to-sap">MMI02 Dispensing</span><span class="tag async">batch job</span></div>
+  <figure><div class="diagram" id="ad-c"></div>
+  <figcaption>การจ่ายยาเกิดบ่อยมาก จึงไม่ส่งทีละครั้ง job จะรวบรวมเฉพาะวันที่ปิดแล้ว หักล้างการคืนภายในวันเดียวกัน แล้วส่งเป็นใบสั่งยาละ 1 call</figcaption></figure>
+
+  <div class="scn-head"><h3>D. สร้าง Material ใหม่ใน SAP → ใช้ได้ใน HIS ทั้งสอง site</h3><span class="dir to-his">MMO01</span><span class="tag sync">push · broadcast</span></div>
+  <figure><div class="diagram" id="ad-d"></div>
+  <figcaption>Master data ส่งไปทุก site พร้อมกัน ถ้า site ใดล้มเหลว ผลจะเป็น PARTIAL_SUCCESS และ Broker จะ retry เฉพาะ site นั้นเอง ถ้าทุก site ล้มเหลว SAP ต้องส่งใหม่หรือ admin กด retry</figcaption></figure>
+
+  <div class="scn-head"><h3>E. ยกเลิกบิลที่ลงบัญชีแล้ว → กลับรายการใน SAP</h3><span class="dir to-sap">GLI01 · InversionFlg = X</span></div>
+  <figure><div class="diagram" id="ad-e"></div>
+  <figcaption>SAP ไม่มี API ลบเอกสาร การยกเลิกจึงทำโดยส่งบรรทัดชุดเดิมพร้อม flag X ภายใต้วันที่และกะของการยกเลิก</figcaption></figure>
+
+  <div class="scn-head"><h3>F. บิล Lab ทันตกรรม → เตรียมทำจ่ายผู้ขายใน SAP</h3><span class="dir to-sap">MMI04</span><span class="tag sync">sync · ต่อบิล</span></div>
+  <figure><div class="diagram" id="ad-f"></div>
+  <figcaption>HIS ส่งยอดสรุปที่รวมตามคลินิก กลุ่มแพทย์ หลักสูตร และประเภทงาน SAP หาสัญญาจ้าง (doc type 403A/B) แล้วสร้าง Earmarked Fund, PO (5030), Release และ SES ให้อัตโนมัติ ส่วนการตั้งหนี้และจ่ายเงินผู้ขายทำต่อใน SAP · ตาม FS เดิมเส้นนี้เป็นการ upload ไฟล์ผ่าน T-code YIMIN004 ปัจจุบันเปลี่ยนเป็น Web Service</figcaption></figure>
+</section>
+
+<!-- ============ 9. OPS ============ -->
+<section id="ops">
+  <h2><span class="n">11</span>Log, การจัดการ Error และการส่งซ้ำ</h2>
+  <div class="two">
+    <div class="card"><h4>บันทึก (Log) มีทุกชั้น</h4><ul>
+      <li><b>HIS</b>: <code>TB_SAP_DATA_LOGS</code> + รายบรรทัด — หน้า Admin › Log การเชื่อมต่อ SAP (อ่านอย่างเดียว)</li>
+      <li><b>Broker</b>: <code>TbSapTransactionLog</code> เก็บ JSON และ SOAP XML ดิบทั้งขาไปขากลับ + ผลรายไซต์ — Dashboard ของ Broker มี export CSV</li>
+      <li><b>Interface App</b>: log ตามที่ Vendor SAP จัดให้ (ต้องขอสิทธิ์เข้าดูหรือขอให้ทีม SAP ตรวจให้)</li>
+      <li><b>SAP</b>: ตาราง <code>YTLOG</code> (สถานะ W/S/E) ดูผ่าน T-code YINRP001 (Interface) และ YINRP002 (System error)</li>
+      <li>ทุกธุรกรรมมี <code>CorrelationId</code> ใช้ตามรอยข้ามทั้ง 3 ชั้นได้</li>
+    </ul></div>
+    <div class="card"><h4>การส่งซ้ำ (Retry / Resend)</h4><ul>
+      <li><span class="dir to-sap">HIS → SAP</span> ไม่มี retry อัตโนมัติ ผู้ใช้กดทำรายการเดิมซ้ำ ระบบข้ามบรรทัดที่สำเร็จแล้ว (Smart Resume)</li>
+      <li><span class="dir to-his">SAP → HIS</span> ถ้าบาง site สำเร็จ Broker retry site ที่เหลือแบบ backoff (30s → สูงสุด 5 ครั้ง) · ถ้าล้มเหลวทั้งหมด ต้องให้ SAP ส่งซ้ำหรือ admin กด retry รายไซต์</li>
+      <li>Dispensing job retry 3 รอบต่อรายการ</li>
+      <li>HIS รับข้อมูลซ้ำได้ (idempotent) ด้วยกุญแจ IRNO + รายการ</li>
+    </ul></div>
+    <div class="card"><h4>สถานะที่ต้องรู้</h4><ul>
+      <li><code>SUCCESS</code> / <code>PARTIAL_SUCCESS</code> / <code>FAILED</code> — ผลรวมของ batch</li>
+      <li><code>Diverged</code> — SAP รับบางบรรทัดแล้ว แต่ HIS rollback (ต้อง reconcile)</li>
+      <li><code>Dead letter</code> — ครบจำนวน retry หรือเป็น error ถาวร</li>
+      <li>Broker มีรายงาน <b>MMO03 gap</b>: เอกสารที่ได้รับรายการไม่ครบตาม TOTAL_REC</li>
+    </ul></div>
+  </div>
+  <div class="note warn"><b>ความเสี่ยงที่พบในโค้ด (ควรนำไปคุยร่วมกัน):</b>
+    <ul style="margin:6px 0 0;padding-left:18px">
+      <li><b>Timeout ไม่เท่ากัน</b>: HIS รอ 15 วินาที แต่ Broker รอ SAP 30 วินาที ถ้า HIS หมดเวลาก่อน SAP อาจ post สำเร็จไปแล้ว SAP กันเอกสารซ้ำได้ด้วย <code>SSBREF</code> / <code>IRNO</code> ใน YTLOG แต่เมื่อผู้ใช้กดซ้ำ HIS จะเห็นเป็น error "has ever been created" ทั้งที่ SAP มีเอกสารแล้ว ต้องกระทบยอดด้วยมือ</li>
+      <li><b>เส้นทางมี 2 ตัวกลาง</b>: เวลาที่ใช้และจุดที่พังเพิ่มขึ้นหนึ่งช่วง ต้องตกลง timeout ของแต่ละช่วงให้ลดหลั่นกัน และตกลงว่าจะตามรอยข้ามระบบด้วย key ใด (CorrelationId ของ Broker + SSBREF/IRNO ของธุรกรรม)</li>
+      <li><b>ผูกกับ transaction ของผู้ใช้</b>: ถ้า SAP/Broker ล่ม ผู้ใช้จะอนุมัติใบเบิก โอน หรือยืม-คืนไม่ได้เลย เพราะยังไม่มี outbox/queue</li>
+      <li><b>ไม่มี API ยกเลิกใน SAP</b>: บรรทัดที่ SAP รับไปก่อน HIS rollback จะค้างอยู่ใน SAP ต้องกระทบยอดด้วยมือ</li>
+      <li><b>SOAP endpoint ฝั่ง SAP → Broker ไม่มีการยืนยันตัวตน</b>: อาศัยการจำกัดเครือข่ายอย่างเดียว</li>
+      <li><b>รูปแบบวันที่</b>: ถ้า server ตั้ง locale เป็นไทย วันที่จะออกมาเป็นปี พ.ศ. ต้องใช้ InvariantCulture</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 10. LESSONS ============ -->
+<section id="lessons">
+  <h2><span class="n">12</span>บทเรียนสำหรับโปรเจคใหม่ที่จะเชื่อม SAP</h2>
+  <p class="sub">สิ่งที่ควรตกลงกับทีม ERP ตั้งแต่ต้น จากประสบการณ์โปรเจคนี้</p>
+  <div>
+    <div class="lesson"><span class="i">01</span><div><h4>ตกลง "มุมมองทิศทาง" และชื่อ interface ให้เป็นชุดเดียว</h4><p>โปรเจคนี้ใช้รหัสจากมุมมอง SAP (I = เข้า SAP, O = ออกจาก SAP) แต่เอกสารเดิมฝั่ง HIS ใช้เลขอีกชุด (เช่น MMI01 ของ SAP = MMO02 ในเอกสาร SSB เดิม และ service MMI03 ชื่อจริงคือ YSV_MMI07) จึงสับสนบ่อย ควรมีตารางชื่อเพียงตารางเดียวตั้งแต่วันแรก</p></div></div>
+    <div class="lesson"><span class="i">02</span><div><h4>เขียนแผนผังระบบและเจ้าของให้ชัดก่อนเริ่ม</h4><p>เส้นทางจริงมี 4 ระบบ (SAP ⇄ Interface App ⇄ SAP Broker ⇄ HIS) และคนละบริษัทดูแลคนละช่วง ควรตกลงตั้งแต่ต้นว่าใครเปิด endpoint ให้ใคร ใครถือ credential ใครดู log ช่วงไหน และเวลามีปัญหาจะไล่จากช่วงไหนก่อน</p></div></div>
+    <div class="lesson"><span class="i">03</span><div><h4>ให้ SAP เป็นคนเลือกเลขบัญชี</h4><p>HIS ส่งแค่รหัสจำแนก (Transaction/Line/HN/พันธกิจ/ช่องทางรับเงิน) แล้ว SAP แปลงด้วย Posting Rule การแก้ผังบัญชีจึงไม่กระทบ HIS แต่ต้องมีหน้าจอให้ผู้ใช้ดูแลรหัสทั้งสองฝั่งให้ตรงกัน</p></div></div>
+    <div class="lesson"><span class="i">04</span><div><h4>กำหนด business key ที่ SAP ใช้ตรวจซ้ำได้</h4><p>ทุก interface ต้องมีกุญแจอ้างอิงที่ SAP echo กลับและใช้ตรวจซ้ำ (เช่น SSBREF, IRNO+ลำดับ) และตั้ง timeout ของ HIS ให้ยาวกว่าของตัวกลาง</p></div></div>
+    <div class="lesson"><span class="i">05</span><div><h4>เลือก sync หรือ async ให้เหมาะกับแต่ละเส้น</h4><p>Query (ยอดคงเหลือ) ควร sync ส่วนการ post เอกสารควรพิจารณา outbox/queue เพื่อไม่ให้งานหน้างานหยุดเมื่อ SAP ล่ม ธุรกรรมปริมาณมาก (จ่ายยา) ใช้ batch</p></div></div>
+    <div class="lesson"><span class="i">06</span><div><h4>อย่าตอบ SOAP Fault กลับไปที่ SAP</h4><p>ทีม SAP ยืนยัน (24 ก.ค. 2026) ว่าถ้าได้ Fault คิวขาออกฝั่ง SAP จะค้าง ให้ตอบ HTTP 200 พร้อมตาราง Error รายรายการแทน และทำให้ฝั่งรับรับข้อความซ้ำได้โดยไม่เกิดผลซ้ำ</p></div></div>
+    <div class="lesson"><span class="i">07</span><div><h4>ถ้ามีหลาย site ต้องมี field สำหรับ route ใน payload</h4><p>SAP ใช้ร่วมแต่ HIS แยก จึงต้องมีค่าอย่าง Cost Center หรือ Storage Location ในข้อความ และกำหนดว่าจะทำอย่างไรเมื่อหาปลายทางไม่เจอ (โดยเฉพาะข้อมูลบุคคล)</p></div></div>
+    <div class="lesson"><span class="i">08</span><div><h4>Master data ที่ไม่มี interface ต้องมีเจ้าของ</h4><p>Movement Type, Plant, Storage Location, หน่วยนับ, ประเภทวัสดุ ถูกตั้งด้วยมือทั้งสองฝั่ง ควรมีผู้รับผิดชอบและขั้นตอนตรวจความตรงกันก่อน go-live</p></div></div>
+    <div class="lesson"><span class="i">09</span><div><h4>เตรียมเครื่องมือทดสอบตั้งแต่ SIT</h4><p>สิ่งที่ช่วยได้มาก: Test kit ยิง SOAP ตรงเข้า SAP, Simulator/Mock SAP ในตัวกลาง, ปุ่ม Preview payload เป็น Excel ให้ผู้ใช้ตรวจ และ scenario ทดสอบแยกตาม Movement Type / Transaction Type</p></div></div>
+    <div class="lesson"><span class="i">10</span><div><h4>วางแผน Reconcile และหน้าจอแก้ไขตั้งแต่ต้น</h4><p>ควรมีรายงานยอดรวมรายวัน HIS เทียบ SAP และหน้าจอจัดการรายการค้าง (resend, mark resolved) ปัจจุบัน HIS มีแค่หน้าดู log</p></div></div>
+    <div class="lesson"><span class="i">11</span><div><h4>ความปลอดภัยของช่องทาง</h4><p>กำหนด TLS, IP allowlist หรือ credential ให้ endpoint ที่ SAP เรียกเข้ามา และเก็บ user/password SAP กับ key ไว้นอก source code</p></div></div>
+  </div>
+</section>
+
+<!-- ============ 11. GLOSSARY ============ -->
+<section id="glossary">
+  <h2><span class="n">13</span>อภิธานศัพท์</h2>
+  <div class="tablewrap">
+  <table>
+    <tbody>
+      <tr><td class="id">DT-HIS / SSB / SDA / HAOS</td><td>ชื่อเรียกระบบ HIS ในแต่ละยุค: SSB = ระบบเดิม, SDA = Smart Dental Application, HAOS = ชื่อโค้ดของระบบปัจจุบัน</td></tr>
+      <tr><td class="id">DT-ERP</td><td>SAP ของคณะทันตแพทยศาสตร์ (โมดูล FI, CO, FM, MM-IM, HR)</td></tr>
+      <tr><td class="id">โยธี / จักรี</td><td>สองโรงพยาบาล/site ที่มี HIS แยกกัน แต่ใช้ SAP ร่วมกัน</td></tr>
+      <tr><td class="id">SAP Broker</td><td>ตัวกลางฝั่ง HIS (HAOS.Sap) พัฒนาโดย Ayodia คุยกับ HIS ทุก site และคุยกับ Interface App</td></tr>
+      <tr><td class="id">Interface App</td><td>ตัวกลางฝั่ง SAP พัฒนาโดย Vendor SAP เป็นระบบเดียวที่ติดต่อ SAP โดยตรง</td></tr>
+      <tr><td class="id">Inbound / Outbound</td><td>มองจาก SAP: Inbound = เข้า SAP, Outbound = ออกจาก SAP</td></tr>
+      <tr><td class="id">RSNUM / RSPOS</td><td>เลขที่และลำดับรายการของ Reservation</td></tr>
+      <tr><td class="id">BANFN / BNFPO</td><td>เลขที่และลำดับรายการของ Purchase Requisition (PR)</td></tr>
+      <tr><td class="id">MBLNR / IRNO</td><td>เลขที่ Material Document ที่ SAP ส่งมาใน MMO03</td></tr>
+      <tr><td class="id">SSBREF</td><td>เลขอ้างอิงรายบรรทัด GL ที่ HIS สร้าง (กะ-วันที่-รหัสจำแนก-เลขเอกสาร-ลำดับ)</td></tr>
+      <tr><td class="id">พันธกิจ (Obligation)</td><td>1 = การเรียนการสอน, 2 = บริการ</td></tr>
+      <tr><td class="id">กลุ่มแพทย์ (Doctor type)</td><td>A–I, P · กลุ่ม B ต้องส่งรหัสหลักสูตร (Specialty) ด้วย</td></tr>
+      <tr><td class="id">YTLOG</td><td>ตาราง log กลางของ interface ฝั่ง SAP (สถานะ W = กำลังทำ, S = สำเร็จ, E = error) ใช้ตรวจซ้ำและส่งซ้ำ</td></tr>
+      <tr><td class="id">Plant 1030 / 2030</td><td>แหล่งเงิน: รายได้ / งบประมาณแผ่นดิน</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ 12. SOURCES ============ -->
+<section id="sources">
+  <h2><span class="n">14</span>แหล่งอ้างอิง</h2>
+  <div class="two">
+    <div class="card"><h4>โค้ด (branch develop)</h4><ul class="mono" style="font-size:12px">
+      <li>HAOS.Sap/HAOS.Sap.WebAPI/Controllers/SapBrokerController.cs</li>
+      <li>HAOS.Sap/…/Infrastructure/SapSoap/Clients/RealSapSoapClient.cs</li>
+      <li>HAOS.Sap/…/Infrastructure/SapSoap/SapToBrokerEndpoints/*</li>
+      <li>HAOS.Sap/…/SiteDispatcher/SapRoutingValueExtractor.cs</li>
+      <li>HAOS.Sap/…/Services/SapRetryBackgroundService.cs</li>
+      <li>HAOS.Main.Business.Finances/Services/SapGli01Service.cs</li>
+      <li>HAOS.Main.Business.Finances/Services/Helpers/GlLineBuilderHelper.cs</li>
+      <li>HAOS.Main.Business.Warehouse/Services/SapMmi01/02/03Service.cs</li>
+      <li>HAOS.Main.Business.Warehouse/Services/SapDispensingJobService.cs</li>
+      <li>HAOS.Main.Business.Warehouse/Services/SapMmo01/02/03Service.cs</li>
+      <li>HAOS.Main.Business.Master/Services/SapCo01/Co02/Fm01/Apo01Service.cs</li>
+      <li>HAOS.Main.WebAPI/Controllers/SapReceiveController.cs</li>
+    </ul></div>
+    <div class="card"><h4>เอกสาร</h4><ul style="font-size:13.5px">
+      <li>SDA-SAP-Interface Spec. [V.1.0.0].xlsx (Index, IN-/OUT- sheets, Test Scenarios)</li>
+      <li>Table Posting Rules for user V2 (27 มี.ค. 2569)</li>
+      <li>FS/TS ฝั่ง SAP: YFIIB_GL01, YIMIB_MMI01/02/07, YIMIN_MMI04, YIMOB_MM01/MMO03, YHROB_HR01, YCOOB_COO01, YFIOB_COO02/FMO01/AP01</li>
+      <li>MOM ประชุม Interface SAP</li>
+      <li>สรุป Solution คลังสินค้า &amp; Interface SAP (โยธีและจักรี) 28 ม.ค. 2026</li>
+      <li>โครงสร้างการเชื่อมโยง DT-HIS กับ DT-ERP (Interface Model)</li>
+      <li>ข้อมูลจากทีมงาน: เส้นทาง 4 ระบบ และการแบ่งความรับผิดชอบ Interface App (Vendor SAP) กับ SAP Broker (Ayodia)</li>
+    </ul></div>
+  </div>
+  <p class="foot">ชื่อ host, IP และ credential ของระบบจริงถูกละไว้โดยเจตนา · ตัวเลขบัญชีในหัวข้อ 07 เป็นตัวอย่างจาก Posting Rule V2 ควรตรวจกับฉบับล่าสุดก่อนอ้างอิง</p>
+</section>
+</main>
+</div>
+
+<script>
+(function(){
+  var NS="http://www.w3.org/2000/svg";
+  var SIDE={usr:0,his:0,job:0,brk:1,sap:2,sapu:2};
+  var KIND={usr:"k-usr",his:"k-his",job:"k-usr",brk:"k-brk",sap:"k-sap",sapu:"k-sap"};
+  function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+  function text(parent,x,y,lines,cls,lh){
+    var t=el("text",{x:x,y:y,"text-anchor":"middle","class":cls},parent);
+    var n=lines.length, y0=y-((n-1)*lh)/2;
+    lines.forEach(function(s,i){var ts=el("tspan",{x:x,y:y0+i*lh,"dominant-baseline":"middle"},t);ts.textContent=s;});
+    return t;
+  }
+  function render(host,spec){
+    var LW=spec.laneW||178, HH=44, PAD=18, LH=15, M=6;
+    var lanes=spec.lanes, W=lanes.length*LW+M*2;
+    var li={}; lanes.forEach(function(l,i){li[l.k]=i;});
+    // rows
+    var row=-1, nodes={}, order=[];
+    spec.nodes.forEach(function(n){
+      if(!n.same) row++;
+      n.row=row; n.lines=n.t.split("\n");
+      var tw=0; n.lines.forEach(function(s){tw=Math.max(tw,s.length);});
+      if(n.type==="dec"){n.w=Math.min(LW-20,Math.max(96,tw*7.2+46));n.h=Math.max(48,n.lines.length*LH+26);}
+      else {n.w=LW-24; n.h=Math.max(38,n.lines.length*LH+18);}
+      nodes[n.id]=n; order.push(n);
+    });
+    var nrows=row+1, rh=[], ry=[];
+    for(var r=0;r<nrows;r++){rh[r]=0;}
+    order.forEach(function(n){rh[n.row]=Math.max(rh[n.row],n.h+(spec.gap||40));});
+    var y=HH+PAD; for(r=0;r<nrows;r++){ry[r]=y+rh[r]/2; y+=rh[r];}
+    var H=y+PAD;
+    var svg=el("svg",{viewBox:"0 0 "+W+" "+H,width:W,height:H,role:"img","aria-label":spec.label,"class":"ad"});
+    host.appendChild(svg);
+    var defs=el("defs",{},svg);
+    [0,1,2].forEach(function(c){
+      var m=el("marker",{id:host.id+"-m"+c,viewBox:"0 0 10 10",refX:"9",refY:"5",markerWidth:"8",markerHeight:"8",orient:"auto"},defs);
+      el("path",{d:"M0,0 L10,5 L0,10 z","class":"ah e"+c},m);
+    });
+    // lanes
+    lanes.forEach(function(l,i){
+      var g=el("g",{"class":KIND[l.kind]},svg), x=M+i*LW;
+      el("rect",{x:x,y:0,width:LW,height:H,"class":"lane-bg k"},g);
+      el("rect",{x:x+1,y:1,width:LW-2,height:HH-6,rx:5,"class":"lane-hd"},g);
+      text(g,x+LW/2,(HH-6)/2+1,l.t.split("\n"),"lane-h",14);
+      if(i>0) el("line",{x1:x,y1:0,x2:x,y2:H,"class":"lane-sep"},svg);
+    });
+    // geometry
+    order.forEach(function(n){n.cx=M+li[n.lane]*LW+LW/2; n.cy=ry[n.row];});
+    var edgeLayer=el("g",{},svg), nodeLayer=el("g",{},svg), lblLayer=el("g",{},svg);
+    // nodes
+    order.forEach(function(n){
+      var lane=lanes[li[n.lane]], g=el("g",{"class":KIND[lane.kind]},nodeLayer);
+      var x=n.cx-n.w/2, yy=n.cy-n.h/2, cls="node";
+      if(n.type==="dec"){
+        el("polygon",{points:[n.cx+","+yy,(x+n.w)+","+n.cy,n.cx+","+(yy+n.h),x+","+n.cy].join(" "),"class":"node dec"},g);
+        text(g,n.cx,n.cy,n.lines,"node-t b",LH);
+      } else {
+        var rx=(n.type==="start"||n.type==="end")?n.h/2:6;
+        if(n.type==="start")cls+=" start"; if(n.type==="end")cls+=" end";
+        el("rect",{x:x,y:yy,width:n.w,height:n.h,rx:Math.min(rx,19),"class":cls},g);
+        text(g,n.cx,n.cy,n.lines,"node-t"+(n.type==="start"||n.type==="end"?" b":"")+(n.type==="end"?" on-dark":""),LH);
+      }
+    });
+    function sideOf(n){return SIDE[lanes[li[n.lane]].kind];}
+    function obstructed(laneK,r1,r2){return order.some(function(n){return n.lane===laneK&&n.row>r1&&n.row<r2;});}
+    function label(x,y,s){
+      if(!s)return;
+      var t=el("text",{x:x,y:y,"text-anchor":"middle","dominant-baseline":"middle","class":"e-lbl"},lblLayer);
+      t.textContent=s;
+      var b; try{b=t.getBBox();}catch(e){b=null;}
+      if(b&&b.width){var bg=el("rect",{x:b.x-4,y:b.y-1,width:b.width+8,height:b.height+2,rx:3,"class":"e-bg"});lblLayer.insertBefore(bg,t);}
+    }
+    spec.edges.forEach(function(e){
+      var a=nodes[e[0]], b=nodes[e[1]], lab=e[2]||"", opt=e[3]||{};
+      var c=sideOf(b)>sideOf(a)?1:(sideOf(b)<sideOf(a)?2:0);
+      if(opt.c!==undefined)c=opt.c;
+      var d, lx, ly, back=false;
+      var aB=a.cy+a.h/2, bT=b.cy-b.h/2;
+      if(b.row>a.row){
+        if(a.lane===b.lane){ d="M"+a.cx+","+aB+" V"+bT; lx=a.cx+ (lab?0:0); ly=(aB+bT)/2; if(lab){lx=a.cx;}}
+        else{
+          var late=!obstructed(a.lane,a.row,b.row+1)&&!(opt.early);
+          var my= late? bT-16 : aB+16;
+          if(!late && obstructed(b.lane,a.row-1,b.row)) my=aB+16;
+          var sx=a.cx+(opt.dx||0);
+          d="M"+sx+","+aB+" V"+my+" H"+b.cx+" V"+bT; lx=(sx+b.cx)/2; ly=my;
+        }
+      } else if(b.row===a.row){
+        var dir=b.cx>a.cx?1:-1;
+        var x1=a.cx+dir*a.w/2, x2=b.cx-dir*b.w/2;
+        d="M"+x1+","+a.cy+" H"+x2; lx=(x1+x2)/2; ly=a.cy-Math.max(a.h,b.h)/2-9;
+      } else {
+        back=true;
+        var laneR=M+(Math.max(li[a.lane],li[b.lane])+1)*LW-8;
+        if(opt.left){var laneL=M+Math.min(li[a.lane],li[b.lane])*LW+8;
+          d="M"+(a.cx-a.w/2)+","+a.cy+" H"+laneL+" V"+b.cy+" H"+(b.cx-b.w/2); lx=laneL+52; ly=(a.cy+b.cy)/2;}
+        else{
+          d="M"+(a.cx+a.w/2)+","+a.cy+" H"+laneR+" V"+b.cy+" H"+(b.cx+b.w/2); lx=laneR-2; ly=(a.cy+b.cy)/2;}
+      }
+      el("path",{d:d,"class":"edge e"+c+(back?" back":"")+(opt.seq?" seq":""),"marker-end":"url(#"+host.id+"-m"+c+")"},edgeLayer);
+      if(lab){ if(opt.lx)lx+=opt.lx; if(opt.ly)ly+=opt.ly; label(lx,ly,lab); }
+    });
+  }
+
+  var U="usr",H="his",B="brk",S="sap";
+  var D={
+  "ad-a":{label:"กรณีรับชำระเงินหน้าเคาน์เตอร์แล้วส่งลงบัญชี SAP ผ่าน GLI01",
+    lanes:[{k:"u",kind:U,t:"ผู้ใช้ HIS\n(แคชเชียร์ / บัญชี)"},{k:"h",kind:H,t:"HIS"},{k:"b",kind:B,t:"ตัวกลาง\n(Broker + Interface App)"},{k:"s",kind:S,t:"SAP FI"}],
+    nodes:[
+      {id:1,lane:"u",type:"start",t:"ผู้ป่วยชำระเงิน"},
+      {id:2,lane:"h",t:"ออกใบเสร็จ\nสถานะ Waiting",same:true},
+      {id:3,lane:"u",t:"บัญชีตรวจสอบรายได้\nกด อนุมัติ"},
+      {id:4,lane:"h",t:"สถานะ Approved",same:true},
+      {id:5,lane:"u",t:"กด \"ส่งข้อมูลลงบัญชี\""},
+      {id:6,lane:"h",t:"สร้างบรรทัด GL ต่อรายการ\nRC/DE/DI + รหัสจำแนก"},
+      {id:7,lane:"b",t:"POST …/BAPI_ACC_\nDOCUMENT_POST/batch\n→ SOAP YfiibGl01"},
+      {id:8,lane:"s",t:"Posting Rule แปลงรหัส\n→ Doc type / GL account"},
+      {id:9,lane:"s",type:"dec",t:"Post ได้\nทุกบรรทัด?"},
+      {id:10,lane:"h",t:"ใบเสร็จ → Posted\nบันทึก PostedBy/At + log"},
+      {id:11,lane:"u",t:"เห็น error\nแก้ mapping แล้วกดส่งใหม่",same:true},
+      {id:12,lane:"h",type:"end",t:"เสร็จ"}
+    ],
+    edges:[[1,2],[2,3,"",{c:0}],[3,4],[4,5,"",{c:0}],[5,6],[6,7,"JSON + X-Broker-Key"],[7,8,"SOAP"],[8,9],[9,10,"ใช่ · SAPREF"],[9,11,"ไม่",{early:true}],[11,5,"ส่งซ้ำ · Smart Resume",{left:true}],[10,12]]},
+
+  "ad-b":{label:"กรณีคลังย่อยเบิกพัสดุ SAP สร้าง Reservation แล้วคลังใหญ่ทำจ่ายกลับมาที่ HIS",laneW:170,
+    lanes:[{k:"u",kind:U,t:"ผู้ใช้ HIS\n(คลังย่อย)"},{k:"h",kind:H,t:"HIS"},{k:"b",kind:B,t:"ตัวกลาง\n(Broker + Interface App)"},{k:"s",kind:S,t:"SAP MM"},{k:"q",kind:"sapu",t:"ผู้ใช้ SAP\n(คลังใหญ่)"}],
+    nodes:[
+      {id:1,lane:"u",type:"start",t:"สร้างใบขอเบิก"},
+      {id:2,lane:"h",t:"ถามยอดคงเหลือ\n(MMI03)"},
+      {id:3,lane:"s",t:"ตอบ LABST\nคงเหลือที่เบิกได้",same:true},
+      {id:4,lane:"u",t:"หัวหน้าอนุมัติ\nขั้นสุดท้าย"},
+      {id:5,lane:"h",t:"MMI01 Mvt 311\nActionFlag = 1"},
+      {id:6,lane:"b",t:"SOAP YimibMmi01\nRequestStock",same:true},
+      {id:7,lane:"s",type:"dec",t:"Stock item?\n(MRP ≠ Z1)"},
+      {id:8,lane:"s",t:"สร้าง Reservation\nRSNUM / RSPOS"},
+      {id:9,lane:"q",t:"ได้ PR (BANFN)\nจัดซื้อทำ PO → รับของ\nเข้าคลังย่อย Mvt 105",same:true},
+      {id:10,lane:"h",t:"เก็บเลข SAP ต่อรายการ\nใบเบิก = รอจ่าย"},
+      {id:11,lane:"q",t:"ทำจ่าย MIGO 311\nอ้าง Reservation"},
+      {id:12,lane:"b",t:"รับ SI_MMO03_IN\nroute ตาม\nREQUESTER_STORE"},
+      {id:13,lane:"h",t:"สร้างเอกสารจ่าย + Lot\nStock card TO / TI\nอัปเดตสถานะใบเบิก"},
+      {id:14,lane:"u",type:"end",t:"ของเข้าคลังย่อย"}
+    ],
+    edges:[[1,2],[2,3,"ถาม"],[3,4,"ยอดคงเหลือ",{early:true}],[4,5],[5,6,"JSON"],[6,7,"SOAP"],[7,8,"ใช่"],[7,9,"non-stock"],[8,10,"RSNUM/RSPOS",{early:true}],[10,11,"ภายหลัง",{c:0,seq:true,early:true}],[11,12,"SOAP (BAdI + proxy)"],[12,13,"POST /api/sap-receive"],[13,14]]},
+
+  "ad-c":{label:"กรณีจ่ายยาผู้ป่วยแล้ว job ส่งตัดสต็อกไป SAP แบบ batch ผ่าน MMI02 Dispensing",
+    lanes:[{k:"u",kind:U,t:"เภสัชกร"},{k:"j",kind:"job",t:"Job Scheduler"},{k:"h",kind:H,t:"HIS"},{k:"b",kind:B,t:"ตัวกลาง\n(Broker + Interface App)"},{k:"s",kind:S,t:"SAP MM"}],laneW:172,
+    nodes:[
+      {id:1,lane:"u",type:"start",t:"จ่ายยา / รับคืนยา"},
+      {id:2,lane:"h",t:"ตัดสต็อกคลังย่อยใน HIS\n(ยังไม่ส่ง SAP)",same:true},
+      {id:3,lane:"j",t:"ทุก 15 นาที เรียก\nrun-dispensing-\ninterface-gathering"},
+      {id:4,lane:"h",t:"Collect: วันที่ปิดแล้ว\nคืนในวัน → หักจาก S01\nคืนข้ามวัน → R01"},
+      {id:5,lane:"h",t:"Send: 1 call ต่อ\nใบสั่งยา / ใบคืน"},
+      {id:6,lane:"b",t:"SOAP YimibMmi02\nIssueTransfSubs",same:true},
+      {id:7,lane:"s",t:"Goods movement\n931/932 หรือ 901/902\n→ Mat. Doc",same:true},
+      {id:8,lane:"h",type:"dec",t:"สำเร็จ?"},
+      {id:9,lane:"h",t:"Queue = Sent\n+ SapReference"},
+      {id:10,lane:"j",t:"รอบถัดไปของ job ส่งซ้ำ\nRetryCount + 1\nครบ 3 → Skipped",same:true}
+    ],
+    edges:[[1,2,"",{c:0}],[2,3,"",{c:0,early:true}],[3,4,"",{c:0}],[4,5],[5,6,"JSON"],[6,7,"SOAP"],[7,8,"ผลรายบรรทัด",{early:true}],[8,9,"ใช่"],[8,10,"ไม่",{c:0}],[10,5,"",{c:0,left:true}]]},
+
+  "ad-d":{label:"กรณีสร้าง Material ใน SAP แล้ว Broker ส่งไปสร้างรายการใน HIS โยธีและจักรี",
+    lanes:[{k:"q",kind:"sapu",t:"ผู้ใช้ SAP\n(MM Master)"},{k:"s",kind:S,t:"SAP\n(exit + proxy)"},{k:"b",kind:B,t:"ตัวกลาง\n(Broker + Interface App)"},{k:"h",kind:H,t:"HIS โยธี"},{k:"j",kind:H,t:"HIS จักรี"}],laneW:170,
+    nodes:[
+      {id:1,lane:"q",type:"start",t:"สร้าง/แก้ Material\nMM01 / MM02"},
+      {id:2,lane:"s",t:"exit ตอน Save\n→ SI_MMO01_IN\n(+ MMO02 หน่วยแปลง)"},
+      {id:3,lane:"b",t:"log + ตัดสินปลายทาง\nMMO01 = broadcast"},
+      {id:4,lane:"h",t:"upsert TBM_EXPENSES\n(ErpCode = STOCK_CODE)\nผูกทุกคลังย่อย"},
+      {id:5,lane:"j",t:"upsert TBM_EXPENSES\nผูกทุกคลังย่อย",same:true},
+      {id:6,lane:"b",type:"dec",t:"ทุก site\nสำเร็จ?"},
+      {id:7,lane:"b",t:"บาง site ล้มเหลว\n→ retry อัตโนมัติ\nเฉพาะ site นั้น"},
+      {id:8,lane:"s",t:"ได้ ResponseData\nว่าง = สำเร็จ\nError = แก้แล้วส่งใหม่",same:true}
+    ],
+    edges:[[1,2],[2,3,"SOAP"],[3,4,"POST /api/sap-receive/mmo01"],[3,5,"",{dx:30}],[4,6,"ผล"],[5,6,""],[6,8,"ใช่ / ไม่ใช่ (ตอบ HTTP 200)",{early:true}],[6,7,"บางส่วน",{c:0}]]},
+
+  "ad-e":{label:"กรณียกเลิกบิลที่ลงบัญชีแล้ว สร้างเอกสารกลับรายการแล้วส่ง GLI01 พร้อม InversionFlg X",
+    lanes:[{k:"u",kind:U,t:"ผู้ใช้ HIS\n(การเงิน / บัญชี)"},{k:"h",kind:H,t:"HIS"},{k:"b",kind:B,t:"ตัวกลาง\n(Broker + Interface App)"},{k:"s",kind:S,t:"SAP FI"}],
+    nodes:[
+      {id:1,lane:"u",type:"start",t:"ขอยกเลิกบิล"},
+      {id:2,lane:"h",type:"dec",t:"ลงบัญชีแล้ว\nแต่ยังไม่ชำระ?"},
+      {id:3,lane:"u",t:"ยังไม่ลงบัญชี → ยกเลิกปกติ\nชำระแล้ว → ถูก block\n(ไม่กระทบ SAP)",same:true},
+      {id:4,lane:"h",t:"สร้าง Invoice Reversal\nสถานะ รอตรวจ"},
+      {id:5,lane:"u",t:"บัญชีอนุมัติ\nแล้วกด Post"},
+      {id:6,lane:"h",t:"บรรทัดชุดเดิม\n+ InversionFlg = X\nวันที่ / กะ ของการยกเลิก"},
+      {id:7,lane:"b",t:"SOAP YfiibGl01",same:true},
+      {id:8,lane:"s",t:"กลับรายการบัญชี",same:true},
+      {id:9,lane:"h",type:"end",t:"Reversal = Posted"}
+    ],
+    edges:[[1,2],[2,3,"ไม่",{c:0}],[2,4,"ใช่"],[4,5,"",{c:0,early:true}],[5,6],[6,7,"JSON"],[7,8,"SOAP"],[8,9,"สำเร็จ",{early:true}]]},
+
+  "ad-f":{label:"กรณีบิล Lab ทันตกรรมส่งยอดไป SAP ผ่าน MMI04 เพื่อเตรียมทำจ่ายผู้ขาย",laneW:170,
+    lanes:[{k:"u",kind:U,t:"ผู้ใช้ HIS\n(Lab / พัสดุ)"},{k:"h",kind:H,t:"HIS"},{k:"b",kind:B,t:"ตัวกลาง\n(Broker + Interface App)"},{k:"s",kind:S,t:"SAP MM"},{k:"q",kind:"sapu",t:"ผู้ใช้ SAP\n(จัดซื้อ / AP)"}],
+    nodes:[
+      {id:1,lane:"u",type:"start",t:"รับงาน Lab /\nวัสดุรากเทียม"},
+      {id:2,lane:"u",t:"ตรวจรับวางบิล\n→ รอ Interface SAP"},
+      {id:3,lane:"u",t:"เลือกบิล\nกด ยืนยันส่ง SAP"},
+      {id:4,lane:"h",t:"รวมยอดตาม คลินิก +\nกลุ่มแพทย์ + หลักสูตร\n+ ประเภทงาน"},
+      {id:5,lane:"b",t:"SOAP YimibMmi04\nLabDental",same:true},
+      {id:6,lane:"s",t:"หาสัญญา Lab → สร้าง\nEarmarked Fund, PO\nRelease, SES",same:true},
+      {id:7,lane:"h",type:"dec",t:"สำเร็จ?"},
+      {id:8,lane:"h",t:"บิล → Success"},
+      {id:9,lane:"u",t:"บิลคงสถานะ\nรอ Interface SAP\nส่งใหม่ได้",same:true},
+      {id:10,lane:"q",t:"ตรวจ PO / SES\nตั้งหนี้ & จ่าย Vendor\n(รายงาน YIMRP004)",same:true}
+    ],
+    edges:[[1,2],[2,3],[3,4],[4,5,"JSON"],[5,6,"SOAP"],[6,7,"ผล",{early:true}],[7,8,"ใช่"],[7,9,"ไม่"],[6,10,"ต่อเนื่อง",{c:0,seq:true,dx:40}]]}
+  };
+  function boot(){for(var id in D){var h=document.getElementById(id);if(h&&!h.firstChild)render(h,D[id]);}}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+</script>
