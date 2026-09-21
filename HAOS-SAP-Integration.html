@@ -156,7 +156,7 @@ summary{cursor:pointer;font-family:var(--display);font-weight:600}
 <nav class="toc" aria-label="สารบัญ">
   <b>สารบัญ</b>
   <ol>
-    <li><a href="#summary">สรุปสั้น</a></li>
+    <li><a href="#summary">สรุปสำหรับผู้บริหาร</a></li>
     <li><a href="#arch">สถาปัตยกรรม</a></li>
     <li><a href="#inventory">จุดเชื่อมต่อทั้งหมด</a></li>
     <li><a href="#coverage">ต่อแล้ว / ยังไม่ต่อ</a></li>
@@ -167,6 +167,8 @@ summary{cursor:pointer;font-family:var(--display);font-weight:600}
     <li><a href="#impact">User Action ที่กระทบ ERP</a></li>
     <li><a href="#activity">Activity Diagrams</a></li>
     <li><a href="#ops">Log, Error, Retry</a></li>
+    <li><a href="#operations">ปฏิบัติการ &amp; Runbook</a></li>
+    <li><a href="#open">คำถามที่ต้องยืนยัน</a></li>
     <li><a href="#lessons">บทเรียนสำหรับโปรเจคใหม่</a></li>
     <li><a href="#glossary">อภิธานศัพท์</a></li>
     <li><a href="#sources">แหล่งอ้างอิง</a></li>
@@ -179,7 +181,6 @@ summary{cursor:pointer;font-family:var(--display);font-weight:600}
   <h1>การเชื่อมต่อ HIS <span class="arrow">⇄</span> SAP ERP</h1>
   <p class="lede">เอกสารนี้อธิบายว่าระบบ HIS ส่งและรับข้อมูลกับ SAP ที่จุดไหนบ้าง ใช้เทคโนโลยีอะไร และการกระทำของผู้ใช้แต่ละอย่างทำให้เกิดอะไรขึ้นอีกฝั่ง สำหรับทีม ERP, ทีม IT และผู้เกี่ยวข้องที่กำลังจะทำ Interface SAP ในโปรเจคถัดไป</p>
   <div class="meta">
-    <span>อ้างอิงโค้ด: <b>branch develop @ 7ef937eda3</b></span>
     <span>ประกอบกับเอกสาร: <b>SDA-SAP Interface Spec V.1.0.0, FS/TS ฝั่ง SAP, Solution โยธี–จักรี (28 ม.ค. 2026)</b></span>
     <span>จัดทำ: <b>19 ก.ย. 2026</b></span>
   </div>
@@ -187,14 +188,33 @@ summary{cursor:pointer;font-family:var(--display);font-weight:600}
 
 <!-- ============ 1. SUMMARY ============ -->
 <section id="summary">
-  <h2><span class="n">01</span>สรุปสั้นใน 1 นาที</h2>
+  <h2><span class="n">01</span>สรุปสำหรับผู้บริหาร</h2>
+  <p>ระบบโรงพยาบาล (HIS) กับระบบบริหารทรัพยากรของมหาวิทยาลัย (SAP) เป็นคนละระบบและคนละฐานข้อมูล แต่พูดถึงเงินและของชิ้นเดียวกัน <b>Interface</b> คือสะพานที่ทำให้ข้อมูลไหลถึงกันโดยไม่ต้องคีย์ซ้ำ — เงินที่รับหน้าเคาน์เตอร์กลายเป็นรายการบัญชีใน SAP ของที่เบิกจากคลังใหญ่ไปตัดสต็อกให้ถูกทั้งสองระบบ และข้อมูลหลักอย่างรายการยา ผู้ขาย ศูนย์ต้นทุน ถูกสร้างที่ SAP ที่เดียวแล้วกระจายมาให้ HIS ใช้</p>
+  <p>สิ่งที่ต้องรู้ในระดับบริหารมี 3 ข้อ: <b>(1)</b> ข้อมูลส่วนใหญ่ไหลทางเดียว HIS ส่งธุรกรรมไป SAP และ SAP ส่งข้อมูลหลักกลับมา <b>(2)</b> การลงบัญชีไม่ได้เกิดอัตโนมัติ ต้องมีคนกดส่งหลังตรวจสอบ ซึ่งเป็นจุดควบคุมที่ตั้งใจออกแบบไว้ และ <b>(3)</b> ถ้าระบบกลางหรือ SAP ใช้งานไม่ได้ งานคลังพัสดุบางอย่างจะทำต่อไม่ได้จนกว่าจะกลับมา</p>
   <div class="keyfacts">
     <div class="fact"><div class="k">14 <small>เส้น interface</small></div><p><span class="dir to-sap">HIS → SAP</span> 6 เส้น (GLI01, MMI01, MMI02, MMI02-Dispensing, MMI03, MMI04) และ <span class="dir to-his">SAP → HIS</span> 8 เส้น (HRO01, MMO01–03, AP01, FM01, CO01, CO02)</p></div>
     <div class="fact"><div class="k">SOAP <small>Web Service</small></div><p>ทุกเส้นใช้ SOAP 1.1 ฝั่ง SAP เปิด Web Service (<code>Y*</code> function) ให้เรียก และ SAP เรียกกลับเข้ามาผ่าน SOAP ไม่มีการใช้ไฟล์หรือ RFC ตรง</p></div>
     <div class="fact"><div class="k">4 <small>ระบบในเส้นทาง</small></div><p><b>SAP ⇄ Interface App ⇄ SAP Broker ⇄ HIS</b> — HIS ไม่ต่อ SAP โดยตรง และ Broker ของเราก็ไม่ต่อ SAP โดยตรง ทุกข้อความผ่าน Interface App ของ Vendor SAP</p></div>
     <div class="fact"><div class="k">Real-time <small>+ batch 1 เส้น</small></div><p>ส่วนใหญ่เป็นแบบ synchronous — ผู้ใช้กดแล้วรอผล SAP ทันที ยกเว้นการจ่ายยาผู้ป่วยที่ส่งแบบ batch job</p></div>
   </div>
-  <ul style="margin-top:20px">
+  <h3>ศัพท์พื้นฐานก่อนอ่าน</h3>
+  <div class="tablewrap">
+  <table>
+    <tbody>
+      <tr><td class="id">Interface</td><td>เส้นทางส่งข้อมูลอัตโนมัติระหว่างสองระบบ หนึ่ง "เส้น" คือข้อมูลหนึ่งชนิดที่ตกลงรูปแบบกันไว้แล้ว เช่น เส้นส่งรายการบัญชี เส้นส่งข้อมูลยา</td></tr>
+      <tr><td class="id">Master Data<br>vs Transaction</td><td><b>Master data</b> คือข้อมูลหลักที่เปลี่ยนไม่บ่อย (รายการยา ผู้ขาย ศูนย์ต้นทุน บุคลากร) · <b>Transaction</b> คือรายการที่เกิดทุกวัน (ใบเสร็จ ใบเบิก การจ่ายยา) — คนละจังหวะและคนละความเร่งด่วน</td></tr>
+      <tr><td class="id">Real-time<br>vs Batch</td><td><b>Real-time</b> ส่งทันทีที่เกิดเหตุและรอคำตอบ · <b>Batch</b> รวบรวมไว้แล้วส่งเป็นรอบ (ในระบบนี้ใช้กับการจ่ายยาผู้ป่วยที่มีปริมาณมาก)</td></tr>
+      <tr><td class="id">ตัวกลาง<br>(Middleware)</td><td>โปรแกรมที่คั่นกลางไม่ให้สองระบบผูกติดกันโดยตรง ทำหน้าที่แปลงรูปแบบข้อความ เลือกปลายทาง และเก็บบันทึก ในระบบนี้มีสองตัวคือ Interface App และ SAP Broker</td></tr>
+      <tr><td class="id">SOAP / WSDL</td><td><b>SOAP</b> คือรูปแบบข้อความมาตรฐานแบบ XML ที่ SAP ใช้คุยกับระบบอื่น · <b>WSDL</b> คือไฟล์ "สัญญา" ที่บอกว่าบริการนั้นรับ-ส่งข้อมูลอะไรบ้าง อีกฝั่งเอาไปสร้างโปรแกรมเรียกใช้ได้ทันที</td></tr>
+      <tr><td class="id">REST / JSON</td><td>รูปแบบข้อความยุคใหม่ที่เบากว่าและอ่านง่ายกว่า SOAP ใช้ระหว่าง HIS กับ SAP Broker ส่วน Broker เป็นคนแปลงเป็น SOAP ให้ฝั่ง SAP</td></tr>
+      <tr><td class="id">Endpoint</td><td>ที่อยู่ปลายทาง (URL) ที่ใช้ส่งข้อความไปหาอีกระบบ</td></tr>
+      <tr><td class="id">Posting Rule</td><td>ตารางใน SAP ที่แปลง "รหัสประเภทธุรกรรม" ที่ HIS ส่งมา ให้กลายเป็นเลขบัญชีและประเภทเอกสาร ทำให้เปลี่ยนผังบัญชีได้โดยไม่ต้องแก้ HIS</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>ภาพรวมการไหลของข้อมูล</h3>
+  <ul>
     <li><b>SAP เป็นเจ้าของ Master Data</b> (วัสดุ/ยา, หน่วยนับ, ผู้ขาย, ศูนย์ต้นทุน, Internal Order, Functional Area, บุคลากร) → ส่งมาสร้าง/แก้ใน HIS อัตโนมัติ</li>
     <li><b>HIS เป็นต้นทางของธุรกรรม</b> — รายได้/ลูกหนี้ (ลงบัญชี FI), การเบิก-โอน-ตัดจ่ายคลังย่อย, การจ่ายยาผู้ป่วย, บิล Lab ทันตกรรม → ส่งไป SAP</li>
     <li><b>SAP เป็นต้นทางของการเคลื่อนไหวคลังใหญ่</b> — การจ่ายของจากคลังใหญ่ให้คลังย่อย, รับของจาก PO, ยกเลิกรับ → ส่งกลับมาเพิ่ม/ลดสต็อกใน HIS</li>
@@ -928,9 +948,145 @@ X-Correlation-Id: 9f3c…
   </div>
 </section>
 
+<!-- ============ OPERATIONS ============ -->
+<section id="operations">
+  <h2><span class="n">12</span>การปฏิบัติงานประจำวันและเมื่อเกิดปัญหา</h2>
+  <p class="sub">ส่วนนี้มีทั้งสิ่งที่ระบบทำอยู่แล้ว และ <b>สิ่งที่ยังต้องตกลงร่วมกัน</b> (ทำเครื่องหมาย <span class="st test">ต้องตกลง</span>) ใช้เป็นตั้งต้นในการประชุมกับทีม ERP และทีม infra ได้</p>
+
+  <h3>จังหวะการทำงานในหนึ่งวัน</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>ช่วงเวลา</th><th>เกิดอะไรขึ้น</th><th>ใครเกี่ยวข้อง</th></tr></thead>
+    <tbody>
+      <tr><td>ตลอดเวลาทำการ</td><td>งานคลังพัสดุวิ่งแบบ real-time — ถามยอด, ขอเบิก, โอน, ยืม-คืน, ตัดจ่าย และ SAP ส่งการจ่ายของ/รับของกลับมา</td><td>คลังย่อย, คลังใหญ่</td></tr>
+      <tr><td>ตลอดเวลาทำการ</td><td>SAP ส่ง master data ที่เพิ่ง สร้าง/แก้ มาทันที (ยา, ผู้ขาย, ศูนย์ต้นทุน, บุคลากร)</td><td>ทีม master data ฝั่ง SAP</td></tr>
+      <tr><td>ช่วงบ่าย–เย็น (ตามรอบบัญชี)</td><td>บัญชีตรวจสอบเอกสารแล้วกด "ส่งข้อมูลลงบัญชี" — เอกสาร FI เข้า SAP ตอนนี้</td><td>ฝ่ายบัญชี / การเงิน</td></tr>
+      <tr><td>ทุก 15 นาที</td><td>Job รวบรวมรายการจ่ายยา แต่ส่งเฉพาะ<b>วันที่ปิดแล้ว</b> — ข้อมูลการจ่ายยาจึงถึง SAP แบบ D+1</td><td>ระบบ (ไม่มีคนกด)</td></tr>
+      <tr><td>ท้ายวัน</td><td>Job ปิดวันของห้องยา (ผู้ป่วยไม่มารับยา) เพื่อให้ยอดของวันนั้นนิ่งก่อนถูกส่ง</td><td>ระบบ</td></tr>
+      <tr><td>สิ้นเดือน / สิ้นปีงบ</td><td>SAP ปิดงวดบัญชี <span class="st test">ต้องตกลง</span> ว่าถ้าเอกสาร HIS ยังส่งไม่ทัน จะเปิดงวดให้ หรือให้ลงวันที่ใหม่</td><td>บัญชี + ทีม SAP</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note warn"><b>ประเด็นปิดงวดที่ต้องตกลงก่อน go-live:</b> HIS ส่ง <code>Postdate</code> เท่ากับวันที่เอกสารเสมอ ถ้าเอกสารของงวดที่ปิดไปแล้วถูกกดส่งทีหลัง SAP จะปฏิเสธ และเอกสารจะค้างสถานะ "อนุมัติแล้ว" ใน HIS ต้องตกลงว่า (ก) กำหนด cut-off ให้บัญชีส่งให้ครบก่อนปิดงวด (ข) เปิดงวดชั่วคราวให้ หรือ (ค) ยอมให้เปลี่ยนวันที่ลงบัญชี ซึ่งจะทำให้ยอดของ HIS กับ SAP อยู่คนละงวด</div>
+
+  <h3>การเฝ้าระวัง (Monitoring)</h3>
+  <div class="two">
+    <div class="card"><h4>มีอยู่แล้ว</h4><ul>
+      <li>Dashboard ของ Broker: สถิติตามสถานะ, คิวที่รอ retry, รายการ dead letter, ตรวจสุขภาพ (health check) ของ HIS แต่ละ site</li>
+      <li>รายงานช่องว่างของ MMO03 — เอกสารที่ได้รับรายการไม่ครบตามจำนวนที่แจ้งมา</li>
+      <li>หน้า Log ใน HIS (ดูอย่างเดียว) และรายงาน Interface / Error ฝั่ง SAP</li>
+    </ul></div>
+    <div class="card"><h4><span class="st test">ต้องตกลง</span> ยังไม่มี</h4><ul>
+      <li>การแจ้งเตือนอัตโนมัติ (อีเมล/LINE/Teams) เมื่อมีรายการ failed หรือ dead letter — ตอนนี้ต้องเปิดหน้าจอดูเอง</li>
+      <li>เกณฑ์ว่า "ผิดปกติ" คืออะไร เช่น failed เกินกี่รายการต่อชั่วโมง หรือไม่มีข้อมูลเข้าเลยเกินกี่ชั่วโมง</li>
+      <li>ใครเป็นคนเฝ้าในเวลาและนอกเวลาทำการ</li>
+      <li>การกระทบยอดรายวัน HIS เทียบ SAP (มีในแผนทดสอบ แต่ยังไม่มีรายงานประจำ)</li>
+    </ul></div>
+  </div>
+
+  <h3>ปริมาณและ SLA <span class="st test">ต้องตกลง</span></h3>
+  <p>ตารางนี้เว้นไว้ให้เติมตัวเลขจริงก่อนประชุมกับทีม infra — ใช้กำหนดขนาดเครื่อง เวลา timeout และเวลาที่ยอมให้ระบบล่มได้</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>เส้น</th><th>ปริมาณต่อวัน</th><th>ช่วงพีค</th><th>เวลาตอบที่ยอมรับได้</th><th>ล่มได้นานสุด</th></tr></thead>
+    <tbody>
+      <tr><td>GLI01 ลงบัญชี</td><td>…</td><td>รอบปิดบัญชีประจำวัน</td><td>…</td><td>…</td></tr>
+      <tr><td>MMI03 ถามยอดคงเหลือ</td><td>… (เรียกทุกครั้งที่เปิดหน้าจอ)</td><td>เช้า–กลางวัน</td><td>ควรต่ำกว่า 3 วินาที</td><td>…</td></tr>
+      <tr><td>MMI01 / MMI02 งานคลัง</td><td>…</td><td>ช่วงอนุมัติเอกสาร</td><td>…</td><td><b>ล่ม = อนุมัติไม่ได้</b></td></tr>
+      <tr><td>MMI02 Dispensing</td><td>… (สูงสุดในระบบ)</td><td>ส่งหลังปิดวัน</td><td>ไม่กระทบผู้ใช้</td><td>ทนได้หลายวัน</td></tr>
+      <tr><td>MMO01–03, HRO01, AP/CO/FM</td><td>…</td><td>เวลาทำการ</td><td>…</td><td>…</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>เมื่อเกิดปัญหา (Runbook ตั้งต้น)</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>อาการ</th><th>ผลต่อผู้ใช้</th><th>ตรวจที่ไหนก่อน</th><th>ระหว่างรอแก้</th></tr></thead>
+    <tbody>
+      <tr><td>SAP Broker ล่ม</td><td>อนุมัติใบเบิก/โอน/ยืม-คืน/ตัดจ่าย และส่งลงบัญชีไม่ได้ · ถามยอดคงเหลือไม่ได้</td><td>health check ของ Broker และ log ฝั่ง HIS</td><td>งานที่ไม่ต้องคุย SAP ทำต่อได้ตามปกติ · งานคลังต้องรอ ไม่ควรเลี่ยงไปทำใน SAP เพราะจะทำให้สองระบบไม่ตรงกัน</td></tr>
+      <tr><td>Interface App หรือ SAP ไม่ตอบ</td><td>เหมือนข้างบน แต่ Broker จะบันทึกไว้ว่าส่งไม่สำเร็จ</td><td>log ของ Broker (มี SOAP ดิบ) แล้วส่งต่อทีม SAP พร้อมเวลาและ key</td><td>ผู้ใช้กดทำรายการเดิมซ้ำได้เมื่อระบบกลับมา ระบบจะข้ามรายการที่สำเร็จแล้ว</td></tr>
+      <tr><td>HIS site ใดล่ม (ขาเข้าจาก SAP)</td><td>SAP ส่งข้อมูลมาไม่สำเร็จเฉพาะ site นั้น</td><td>Dashboard ของ Broker: รายการ PARTIAL_SUCCESS และ dead letter</td><td>Broker retry ให้อัตโนมัติ ถ้าครบจำนวนแล้วยังไม่ได้ ต้องกด retry รายไซต์ หรือขอให้ SAP ส่งซ้ำ</td></tr>
+      <tr><td>รายการจ่ายยาค้าง (Skipped)</td><td>สต็อกใน SAP ไม่ตรงกับ HIS</td><td>คิวจ่ายยาใน HIS และ log</td><td><span class="st test">ต้องตกลง</span> ปัจจุบันไม่มีหน้าจอให้ผู้ใช้สั่งส่งซ้ำ ต้องให้ทีมพัฒนาช่วย</td></tr>
+      <tr><td>ส่งสำเร็จบางบรรทัด (Diverged)</td><td>SAP มีเอกสารแล้วแต่ HIS ยังไม่อัปเดต</td><td>หน้า Log ใน HIS (สถานะ Diverged) เทียบกับ SAP</td><td>ต้องกระทบยอดด้วยมือ <span class="st test">ต้องตกลง</span> ว่าใครเป็นคนตรวจและบ่อยแค่ไหน</td></tr>
+      <tr><td>SAP ปิดระบบตามแผน (maintenance)</td><td>เหมือนกรณี SAP ไม่ตอบ</td><td>—</td><td><span class="st test">ต้องตกลง</span> ให้ทีม SAP แจ้งล่วงหน้าผ่านช่องทางไหน และ HIS ควรขึ้นข้อความแจ้งผู้ใช้หรือไม่</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Environment และการเตรียมระบบ</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>สิ่งที่ต้องเตรียม</th><th>รายละเอียด</th></tr></thead>
+    <tbody>
+      <tr><td>ชุด environment</td><td>ต้องจับคู่ให้ครบ 4 ระบบต่อหนึ่งชุด (DEV / QAS / PRD) — SAP client, Interface App, Broker, HIS ของแต่ละ site <span class="st test">ต้องตกลง</span> ว่าชุดทดสอบจะชี้หากันอย่างไร ไม่ให้ข้อมูลทดสอบหลุดเข้าระบบจริง</td></tr>
+      <tr><td>เครือข่าย</td><td>เปิดทางให้สองทิศทาง (Broker → Interface App และ Interface App → Broker) ระบุผู้รับผิดชอบเปิด firewall แต่ละช่วง</td></tr>
+      <tr><td>กุญแจและรหัสผ่าน</td><td>key ของแต่ละ site, user/password ที่ใช้เรียกปลายทาง, JWT ของหน้า Admin — กำหนดผู้ถือ วิธีเปลี่ยน และรอบการเปลี่ยน</td></tr>
+      <tr><td>ข้อมูลตั้งต้นก่อน go-live</td><td>ต้องให้ SAP ส่ง master data ทั้งชุดมาก่อน (ยา/วัสดุ, หน่วยแปลง, ผู้ขาย, ศูนย์ต้นทุน, Internal Order, Functional Area, บุคลากร) และตั้งค่ารหัสที่ไม่มี interface ให้ตรงกันทั้งสองฝั่งก่อนเริ่มใช้งานจริง</td></tr>
+      <tr><td>ซ้อมก่อนใช้จริง</td><td>ซ้อมเคสไม่สวยอย่างน้อย: SAP ปิดงวด, ปลายทางไม่ตอบ, ส่งซ้ำ, master data ขาด, ข้อมูลค้างแล้วตามเก็บ</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ OPEN QUESTIONS ============ -->
+<section id="open">
+  <h2><span class="n">13</span>คำถามที่ต้องยืนยัน</h2>
+  <p class="sub">รวมสิ่งที่เอกสารนี้ยังตอบไม่ได้จากข้อมูลที่มี พิมพ์ตารางนี้ไปคุยในที่ประชุมได้เลย ช่อง "คำตอบ" เว้นไว้ให้กรอก</p>
+
+  <h3>ก. Interface App (ตัวกลางฝั่ง Vendor SAP) — ช่องว่างที่ใหญ่ที่สุด</h3>
+  <p>เอกสารนี้อธิบายฝั่ง HIS และ SAP Broker ได้ละเอียดเพราะเห็นระบบจริง แต่ <b>รายละเอียดของ Interface App ยังไม่มีข้อมูล</b> ซึ่งกระทบการออกแบบ timeout การกันข้อมูลซ้ำ และการไล่ปัญหา</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>#</th><th>คำถาม</th><th>ทำไมต้องรู้</th><th>คำตอบ</th></tr></thead>
+    <tbody>
+      <tr><td class="id">A1</td><td>ส่งต่อแบบรอผลทันที (synchronous) หรือมีคิวเก็บไว้ส่งทีหลัง</td><td>ตัดสินว่าผู้ใช้จะได้คำตอบจริงหรือได้แค่ใบรับฝาก และกระทบการออกแบบหน้าจอ</td><td></td></tr>
+      <tr><td class="id">A2</td><td>timeout ของแต่ละทิศทางเท่าไหร่</td><td>ต้องตั้งให้ลดหลั่นกับ HIS (15 วินาที) และ Broker (30 วินาที) ไม่ให้ตัดกลางคัน</td><td></td></tr>
+      <tr><td class="id">A3</td><td>มี retry เองไหม กี่ครั้ง และกันข้อมูลซ้ำอย่างไร</td><td>ถ้า retry ซ้อนกับของเราจะเกิดเอกสารซ้ำใน SAP</td><td></td></tr>
+      <tr><td class="id">A4</td><td>เก็บ log อะไรไว้บ้าง นานแค่ไหน และขอดูได้อย่างไร</td><td>เวลาข้อมูลหาย ต้องพิสูจน์ได้ว่าหลุดช่วงไหน</td><td></td></tr>
+      <tr><td class="id">A5</td><td>แปลงหรือตรวจสอบข้อมูลเพิ่มเติมไหม หรือส่งผ่านตรงๆ</td><td>ถ้ามีการแปลงค่า ต้องรู้ ไม่งั้นไล่ปัญหาไม่เจอ</td><td></td></tr>
+      <tr><td class="id">A6</td><td>endpoint และวิธียืนยันตัวตนของแต่ละ environment</td><td>ใช้ตั้งค่าและขอเปิด firewall</td><td></td></tr>
+      <tr><td class="id">A7</td><td>รับข้อความขนาดสูงสุดเท่าไหร่ / batch ได้กี่รายการ</td><td>เส้นจ่ายยาและเส้นบัญชีส่งเป็นชุดใหญ่</td><td></td></tr>
+      <tr><td class="id">A8</td><td>ใครดูแล แจ้งปัญหาทางไหน และมีคนดูแลนอกเวลาทำการไหม</td><td>ใช้เขียน runbook ให้จบวงจร</td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>ข. ข้อมูลและกระบวนการ</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>#</th><th>คำถาม</th><th>ที่มาของข้อสงสัย</th><th>คำตอบ</th></tr></thead>
+    <tbody>
+      <tr><td class="id">B1</td><td>GLI01 ตกลงส่งแบบ<b>รายเอกสาร</b> หรือ<b>สรุปยอดรายวัน</b></td><td>spec ฉบับแรกระบุว่าเป็น batch สรุปยอดตาม Posting Rule + Cost Center แต่ระบบปัจจุบันส่งทีละเอกสารตามที่ผู้ใช้กด</td><td></td></tr>
+      <tr><td class="id">B2</td><td>MMI04 ยังให้ SAP สร้าง Earmarked Fund, PO และ SES อัตโนมัติเหมือนเดิมหรือไม่</td><td>FS เดิมเป็นการ upload ไฟล์ผ่าน T-code ปัจจุบันเปลี่ยนเป็น web service</td><td></td></tr>
+      <tr><td class="id">B3</td><td>สถานะทดสอบล่าสุดของ HRO01, Dispensing, Transfer sub-store, MMI04 และเคส GLI01 ที่ยังไม่ผ่าน</td><td>อ้างจาก spec V.1.0.0 ซึ่งน่าจะเก่ากว่าสถานะจริง</td><td></td></tr>
+      <tr><td class="id">B4</td><td>รหัส <code>UN</code> ปรับปรุงสิ้นเดือน จะเปิดใช้หรือไม่</td><td>Posting Rule ฝั่ง SAP รองรับแล้ว แต่ยังไม่มีจุดส่งฝั่ง HIS</td><td></td></tr>
+      <tr><td class="id">B5</td><td>จักรีใช้รหัสชุดแยก (<code>_MS</code>) เฉพาะฝั่งบัญชี หรือทุกเส้น</td><td>เห็นชุดรหัสแยกเฉพาะในตาราง Posting Rule</td><td></td></tr>
+      <tr><td class="id">B6</td><td>รหัสที่ไม่มี interface (movement type, คลัง, แหล่งเงิน, หน่วยนับ, ประเภทวัสดุ) ใครเป็นเจ้าของ และตรวจความตรงกันเมื่อไหร่</td><td>ตั้งค่าด้วยมือทั้งสองฝั่ง ถ้าไม่ตรงกันจะ error ตอนส่งจริง</td><td></td></tr>
+      <tr><td class="id">B7</td><td>ต้องการให้ HIS เห็นสถานะเอกสารใน SAP (PR/PO, การจ่ายเงิน, งบคงเหลือ) หรือไม่</td><td>ยังไม่มีเส้นไหนส่งสถานะกลับ เป็นคำถามที่ผู้ใช้ถามบ่อยที่สุด</td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>ค. ปฏิบัติการและข้อมูลส่วนบุคคล</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>#</th><th>คำถาม</th><th>ทำไมต้องรู้</th><th>คำตอบ</th></tr></thead>
+    <tbody>
+      <tr><td class="id">C1</td><td>นโยบายปิดงวด: cut-off เวลาไหน และถ้าส่งไม่ทันจะทำอย่างไร</td><td>เอกสารของงวดที่ปิดแล้วจะ post ไม่ได้</td><td></td></tr>
+      <tr><td class="id">C2</td><td>ปริมาณต่อวันและเวลาตอบที่ยอมรับได้ของแต่ละเส้น</td><td>ใช้กำหนดขนาดระบบและ timeout</td><td></td></tr>
+      <tr><td class="id">C3</td><td>ใครรับการแจ้งเตือนเมื่อ interface ล้มเหลว ทั้งในและนอกเวลาทำการ</td><td>ตอนนี้ยังไม่มีการแจ้งเตือนอัตโนมัติ</td><td></td></tr>
+      <tr><td class="id">C4</td><td>เก็บ log ไว้นานเท่าไหร่ และใครเข้าดูได้บ้าง</td><td>log เก็บ <b>ข้อมูลดิบทั้งข้อความ</b> ซึ่งมี HN, VN, วันที่มาพบแพทย์ (เส้นจ่ายยา) และเลขบัตรประชาชน ที่อยู่ เบอร์โทร (เส้นบุคลากร)</td><td></td></tr>
+      <tr><td class="id">C5</td><td>ถ้าหาปลายทางไม่เจอ ข้อมูลบุคลากรถูกส่งไปทุก site — ยอมรับได้หรือต้องเปลี่ยนเป็นหยุดส่ง</td><td>เป็นข้อมูลส่วนบุคคลที่อาจไปอยู่ผิด site</td><td></td></tr>
+      <tr><td class="id">C6</td><td>ใครเป็นคนตรวจรายการค้าง (Diverged / dead letter) และบ่อยแค่ไหน</td><td>ปัจจุบันไม่มีหน้าจอให้ผู้ใช้จัดการเอง</td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
 <!-- ============ 10. LESSONS ============ -->
 <section id="lessons">
-  <h2><span class="n">12</span>บทเรียนสำหรับโปรเจคใหม่ที่จะเชื่อม SAP</h2>
+  <h2><span class="n">14</span>บทเรียนสำหรับโปรเจคใหม่ที่จะเชื่อม SAP</h2>
   <p class="sub">สิ่งที่ควรตกลงกับทีม ERP ตั้งแต่ต้น จากประสบการณ์โปรเจคนี้</p>
   <div>
     <div class="lesson"><span class="i">01</span><div><h4>ตกลง "มุมมองทิศทาง" และชื่อ interface ให้เป็นชุดเดียว</h4><p>โปรเจคนี้ใช้รหัสจากมุมมอง SAP (I = เข้า SAP, O = ออกจาก SAP) แต่เอกสารเดิมฝั่ง HIS ใช้เลขอีกชุด (เช่น MMI01 ของ SAP = MMO02 ในเอกสาร SSB เดิม และ service MMI03 ชื่อจริงคือ YSV_MMI07) จึงสับสนบ่อย ควรมีตารางชื่อเพียงตารางเดียวตั้งแต่วันแรก</p></div></div>
@@ -949,7 +1105,7 @@ X-Correlation-Id: 9f3c…
 
 <!-- ============ 11. GLOSSARY ============ -->
 <section id="glossary">
-  <h2><span class="n">13</span>อภิธานศัพท์</h2>
+  <h2><span class="n">15</span>อภิธานศัพท์</h2>
   <div class="tablewrap">
   <table>
     <tbody>
@@ -974,23 +1130,9 @@ X-Correlation-Id: 9f3c…
 
 <!-- ============ 12. SOURCES ============ -->
 <section id="sources">
-  <h2><span class="n">14</span>แหล่งอ้างอิง</h2>
+  <h2><span class="n">16</span>แหล่งอ้างอิง</h2>
   <div class="two">
-    <div class="card"><h4>โค้ด (branch develop)</h4><ul class="mono" style="font-size:12px">
-      <li>HAOS.Sap/HAOS.Sap.WebAPI/Controllers/SapBrokerController.cs</li>
-      <li>HAOS.Sap/…/Infrastructure/SapSoap/Clients/RealSapSoapClient.cs</li>
-      <li>HAOS.Sap/…/Infrastructure/SapSoap/SapToBrokerEndpoints/*</li>
-      <li>HAOS.Sap/…/SiteDispatcher/SapRoutingValueExtractor.cs</li>
-      <li>HAOS.Sap/…/Services/SapRetryBackgroundService.cs</li>
-      <li>HAOS.Main.Business.Finances/Services/SapGli01Service.cs</li>
-      <li>HAOS.Main.Business.Finances/Services/Helpers/GlLineBuilderHelper.cs</li>
-      <li>HAOS.Main.Business.Warehouse/Services/SapMmi01/02/03Service.cs</li>
-      <li>HAOS.Main.Business.Warehouse/Services/SapDispensingJobService.cs</li>
-      <li>HAOS.Main.Business.Warehouse/Services/SapMmo01/02/03Service.cs</li>
-      <li>HAOS.Main.Business.Master/Services/SapCo01/Co02/Fm01/Apo01Service.cs</li>
-      <li>HAOS.Main.WebAPI/Controllers/SapReceiveController.cs</li>
-    </ul></div>
-    <div class="card"><h4>เอกสาร</h4><ul style="font-size:13.5px">
+        <div class="card"><h4>เอกสาร</h4><ul style="font-size:13.5px">
       <li>SDA-SAP-Interface Spec. [V.1.0.0].xlsx (Index, IN-/OUT- sheets, Test Scenarios)</li>
       <li>Table Posting Rules for user V2 (27 มี.ค. 2569)</li>
       <li>FS/TS ฝั่ง SAP: YFIIB_GL01, YIMIB_MMI01/02/07, YIMIN_MMI04, YIMOB_MM01/MMO03, YHROB_HR01, YCOOB_COO01, YFIOB_COO02/FMO01/AP01</li>
