@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="th">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SAP Interface — เอกสารการเชื่อมต่อ</title>
+<meta name="description" content="รวมเอกสารการเชื่อมต่อระบบ HIS (HAOS) กับ SAP ERP คณะทันตแพทยศาสตร์ ม.มหิดล">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F4F6F3; --surface:#FFFFFF; --surface-2:#EEF1ED; --ink:#17201D; --muted:#56635D; --rule:#D5DBD5;
+  --his:#0B7566; --his-soft:#DFF1EC; --sap:#3245A3; --sap-soft:#E5E8F6; --brk:#9C620E; --brk-soft:#F6ECD9;
+  --display:"Bai Jamjuree","Leelawadee UI","Tahoma",sans-serif;
+  --body:"IBM Plex Sans Thai","Leelawadee UI","Tahoma",sans-serif;
+  --mono:"IBM Plex Mono","Consolas","Menlo",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1513; --surface:#161E1B; --surface-2:#1C2522; --ink:#E3EAE6; --muted:#9BA8A2; --rule:#2B3632;
+    --his:#4DBFAC; --his-soft:#15332D; --sap:#95A3F2; --sap-soft:#1E2444; --brk:#E2A84E; --brk-soft:#36291A;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1513; --surface:#161E1B; --surface-2:#1C2522; --ink:#E3EAE6; --muted:#9BA8A2; --rule:#2B3632;
+  --his:#4DBFAC; --his-soft:#15332D; --sap:#95A3F2; --sap-soft:#1E2444; --brk:#E2A84E; --brk-soft:#36291A;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.7;padding-inline:20px;padding-block:0 64px}
+.wrap{max-width:760px;margin:0 auto;padding-top:64px}
+.eyebrow{font-family:var(--display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-family:var(--display);font-size:clamp(28px,4.2vw,40px);font-weight:700;line-height:1.25;text-wrap:balance;margin:8px 0 0}
+h1 .arrow{color:var(--brk)}
+.lede{font-size:17px;max-width:62ch;color:var(--muted);margin:14px 0 0}
+.label{font-family:var(--display);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:48px 0 14px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.card{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:20px 22px;transition:border-color .15s,transform .15s}
+.card:hover{border-color:var(--his);transform:translateY(-1px)}
+.card:focus-visible{outline:2px solid var(--sap);outline-offset:3px}
+.card h2{font-family:var(--display);font-size:20px;font-weight:700;margin:0;display:flex;gap:10px;align-items:baseline}
+.card h2 .go{color:var(--brk);font-weight:500}
+.card p{margin:8px 0 0;color:var(--muted);max-width:60ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{font-family:var(--mono);font-size:12px;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.chip.his{background:var(--his-soft);color:var(--his)}
+.chip.sap{background:var(--sap-soft);color:var(--sap)}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--rule);font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px}
+footer b{color:var(--ink);font-weight:500}
+footer a{color:var(--his)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">DT-HIS (HAOS) · DT-ERP (SAP) · คณะทันตแพทยศาสตร์ ม.มหิดล</div>
+    <h1>SAP Interface <span class="arrow">⇄</span> เอกสารการเชื่อมต่อ</h1>
+    <p class="lede">รวมเอกสารอ้างอิงเรื่องการเชื่อมต่อระบบ HIS กับ SAP ERP สำหรับทีม ERP, ทีม IT และผู้เกี่ยวข้องที่กำลังจะทำ Interface SAP ในโปรเจคถัดไป</p>
+  </header>
+
+  <div class="label">เอกสาร</div>
+
+  <a class="card" href="HAOS-SAP-Integration.html">
+    <h2>การเชื่อมต่อ HIS ⇄ SAP ERP <span class="go">→</span></h2>
+    <p>ระบบ HIS ส่งและรับข้อมูลกับ SAP ที่จุดไหนบ้าง ใช้เทคโนโลยีอะไร และการกระทำของผู้ใช้แต่ละอย่างทำให้เกิดอะไรขึ้นอีกฝั่ง — พร้อมสถาปัตยกรรม, รายละเอียดเชิงเทคนิค, Activity Diagram และบทเรียนสำหรับโปรเจคใหม่</p>
+    <div class="chips">
+      <span class="chip">14 หัวข้อ</span>
+      <span class="chip his">HIS → SAP 6 เส้น</span>
+      <span class="chip sap">SAP → HIS 8 เส้น</span>
+      <span class="chip">SOAP 1.1</span>
+    </div>
+  </a>
+
+  <footer>
+    <span>อ้างอิงโค้ด: <b>branch develop @ 7ef937eda3</b></span>
+    <span>จัดทำ: <b>19 ก.ย. 2026</b></span>
+    <span><a href="https://github.com/auchareet-star/sap-interface">GitHub repository</a></span>
+  </footer>
+</div>
